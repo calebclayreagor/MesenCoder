@@ -9,10 +9,6 @@ __pycache__/
 data/raw/
 data/unzip/
 
-# === Log files ===
-logs/
-*.log
-
 # === OS & editor-specific files ===
 .DS_Store
 Thumbs.db
