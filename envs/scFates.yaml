@@ -157,6 +157,7 @@ dependencies:
       - elpigraph-python==0.3.2
       - fonttools==4.58.0
       - h5py==3.13.0
+      - harmonypy==0.0.10
       - igraph==0.11.8
       - joblib==1.5.0
       - kiwisolver==1.4.8
