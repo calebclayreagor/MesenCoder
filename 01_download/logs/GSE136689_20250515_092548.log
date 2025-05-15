@@ -1,0 +1,15 @@
+=== GEO Data Download and Extraction ===
+Started at: Do 15. Mai 09:25:48 CEST 2025
+URL: https://ftp.ncbi.nlm.nih.gov/geo/series/GSE136nnn/GSE136689/suppl/GSE136689%5FMetaFile%5FDE%5Fand%5FSM%5FCells%5FE8%2E5%5FE9%2E0%5FE9%2E5%2Etxt%2Egz
+GEO Accession: GSE136689
+Log file: logs/GSE136689_20250515_092548.log
+=======================================
+Downloading to: ../data/raw/GSE136689/GSE136689_MetaFile_DE_and_SM_Cells_E8.5_E9.0_E9.5.txt.gz
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0 28  137k   28 39651    0     0  74672      0  0:00:01 --:--:--  0:00:01 74531100  137k  100  137k    0     0   214k      0 --:--:-- --:--:-- --:--:--  214k
+Unzipping to: ../data/unzip/GSE136689/GSE136689_MetaFile_DE_and_SM_Cells_E8.5_E9.0_E9.5.txt
+Done
+Raw file saved to:     ../data/raw/GSE136689/GSE136689_MetaFile_DE_and_SM_Cells_E8.5_E9.0_E9.5.txt.gz
+Extracted file(s) saved to: ../data/unzip/GSE136689
+Finished at: Do 15. Mai 09:25:49 CEST 2025

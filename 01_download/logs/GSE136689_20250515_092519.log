@@ -1,0 +1,15 @@
+=== GEO Data Download and Extraction ===
+Started at: Do 15. Mai 09:25:19 CEST 2025
+URL: https://ftp.ncbi.nlm.nih.gov/geo/series/GSE136nnn/GSE136689/suppl/GSE136689%5FCounts%5FMatrix%5FDE%5Fand%5FSM%5FCells%5FE8%2E5%5FE9%2E0%5FE9%2E5%2Etxt%2Egz
+GEO Accession: GSE136689
+Log file: logs/GSE136689_20250515_092519.log
+=======================================
+Downloading to: ../data/raw/GSE136689/GSE136689_Counts_Matrix_DE_and_SM_Cells_E8.5_E9.0_E9.5.txt.gz
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  2 38.7M    2  835k    0     0   822k      0  0:00:48  0:00:01  0:00:47  821k 24 38.7M   24 9530k    0     0  4681k      0  0:00:08  0:00:02  0:00:06 4678k 45 38.7M   45 17.4M    0     0  5916k      0  0:00:06  0:00:03  0:00:03 5916k 67 38.7M   67 26.1M    0     0  6609k      0  0:00:05  0:00:04  0:00:01 6607k 88 38.7M   88 34.1M    0     0  6984k      0  0:00:05  0:00:05 --:--:-- 7003k100 38.7M  100 38.7M    0     0  7275k      0  0:00:05  0:00:05 --:--:-- 8754k
+Unzipping to: ../data/unzip/GSE136689/GSE136689_Counts_Matrix_DE_and_SM_Cells_E8.5_E9.0_E9.5.txt
+Done
+Raw file saved to:     ../data/raw/GSE136689/GSE136689_Counts_Matrix_DE_and_SM_Cells_E8.5_E9.0_E9.5.txt.gz
+Extracted file(s) saved to: ../data/unzip/GSE136689
+Finished at: Do 15. Mai 09:25:28 CEST 2025

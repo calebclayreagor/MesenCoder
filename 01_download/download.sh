@@ -23,7 +23,8 @@ else
   GEO_ACC=$(echo "$FILENAME_DECODED" | cut -d'_' -f1 | cut -d'.' -f1)
 fi
 
-LOGFILE="logs/${GEO_ACC}.log"
+TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+LOGFILE="logs/${GEO_ACC}_${TIMESTAMP}.log"
 
 # Redirect stdout and stderr to logfile
 exec > >(tee -i "$LOGFILE") 2>&1
@@ -51,9 +52,12 @@ curl -L "$URL" -o "$RAW_PATH"
 if [[ "$FILENAME_DECODED" == *.tar ]]; then
   echo "Extracting tar archive to: $UNZIP_DIR"
   tar -xf "$RAW_PATH" -C "$UNZIP_DIR"
-else
+elif [[ "$FILENAME_DECODED" == *.gz ]]; then
   echo "Unzipping to: $UNZIP_PATH"
   gunzip -c "$RAW_PATH" > "$UNZIP_PATH"
+else
+  echo "Unsupported file type: $FILENAME_DECODED"
+  exit 1
 fi
 
 echo "Done"
