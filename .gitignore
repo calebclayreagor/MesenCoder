@@ -13,3 +13,5 @@ data/
 Thumbs.db
 .vscode/
 .idea/
+
+03_signatures/.pybiomart.sqlite
