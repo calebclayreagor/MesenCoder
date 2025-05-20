@@ -1,17 +1,18 @@
 # === Python cache files ===
 __pycache__/
 *.py[cod]
+03_signatures/.pybiomart.sqlite
 
 # === Jupyter notebook checkpoints ===
 .ipynb_checkpoints/
 
-# === Data files (exclude downloaded and unzipped data) ===
-data/
+# === Data files ===
+data/raw/
+data/unzip/
+data/processed/
 
 # === OS & editor-specific files ===
 .DS_Store
 Thumbs.db
 .vscode/
 .idea/
-
-03_signatures/.pybiomart.sqlite
