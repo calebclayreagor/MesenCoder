@@ -10,6 +10,7 @@ __pycache__/
 data/raw/
 data/unzip/
 data/processed/
+data/trajectories/
 
 # === OS & editor-specific files ===
 .DS_Store
