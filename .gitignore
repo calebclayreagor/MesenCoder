@@ -11,6 +11,7 @@ data/raw/
 data/unzip/
 data/processed/
 data/trajectories/
+data/modeling/
 
 # === OS & editor-specific files ===
 .DS_Store
