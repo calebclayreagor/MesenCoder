@@ -1,7 +1,7 @@
 # === Python cache files ===
 __pycache__/
 *.py[cod]
-03_signatures/scripts/.pybiomart.sqlite
+scripts/.pybiomart.sqlite
 
 # === Jupyter notebook checkpoints ===
 .ipynb_checkpoints/
