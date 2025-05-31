@@ -6,6 +6,10 @@ scripts/.pybiomart.sqlite
 # === Jupyter notebook checkpoints ===
 .ipynb_checkpoints/
 
+# === WandB logs & checkpoints =======
+modeling/wandb/
+modeling/checkpoints/
+
 # === Data files ===
 data/raw/
 data/unzip/
