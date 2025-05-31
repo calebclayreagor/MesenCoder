@@ -24,7 +24,8 @@ class MesNet(nn.Module):
             z = mu + eps * std
 
         # orthogonal latents z
-        z, _ = torch.linalg.qr(z)
+        z0 = z - z.mean(dim = 0, keepdim = True)
+        z, _ = torch.linalg.qr(z0, mode = 'reduced')
 
         # regression & classification
         y_pred = self.regression_head(z)
