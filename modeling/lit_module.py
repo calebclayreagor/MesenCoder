@@ -24,9 +24,7 @@ class MesenchymalStates(L.LightningModule):
         pred_loss = ((1 - self.hparams.lambda_clf) * loss_dict['mse_loss']) + \
                     (self.hparams.lambda_clf * loss_dict['clf_loss'])
         loss_dict['loss'] = (w * pred_loss) + (self.hparams.lambda_kldiv * loss_dict['kldiv_loss'])
-        for key in ('mse_loss', 'clf_loss', 'loss'):
-            loss_dict[key] = loss_dict[key].mean()
-        return loss_dict
+        return {key : val.mean() for key, val in loss_dict.items()}
 
     def training_step(self, batch, _):
         outs = self.forward(batch[0])
