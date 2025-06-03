@@ -35,9 +35,10 @@ for key in adata_dict:
     # trajectory signatures (scaled)
     adata.obsm['X_signature'] = np.zeros((adata.shape[0], len(feat_dict)))
     for i, (source, df) in enumerate(feat_dict.items()):
-        sc.tl.score_genes(adata, df[species], score_name = f'{source}_signature', ctrl_as_ref = True)
-        adata.obsm['X_signature'][:, i] = adata.obs[f'{source}_signature'].values
-    adata.obsm['X_signature'] = StandardScaler().fit_transform(adata.obsm['X_signature'])
+        name = f'{source}_signature'
+        sc.tl.score_genes(adata, df[species], score_name = name, ctrl_as_ref = True)
+        adata.obs[name] = StandardScaler().fit_transform(adata.obs[name].values.reshape(-1, 1))
+        adata.obsm['X_signature'][:, i] = adata.obs[name].values
 
     # scaled features (sparse)
     sc.pp.scale(adata)
@@ -60,7 +61,7 @@ for key in adata_dict:
     # print(key, adata_dict[key])
 
 #%%
-adata = ad.concat(adata_dict, join = 'outer', merge = 'same', label = 'Source')
+adata = ad.concat(adata_dict, join = 'outer', merge = 'same', label = 'source')
 adata.obs_names_make_unique()
 adata.obs['weight'] = adata.shape[0] / adata.obs.n_celltype
 adata.obs['weight'] = adata.obs.weight / adata.obs.weight.mean()

@@ -1,0 +1,23 @@
+program: training.py
+project: mesenchymal-states
+method: random
+metric:
+  goal: minimize
+  name: val_pred_loss
+parameters:
+  n_layers:
+    values: [3, 5, 8, 10]
+  hidden_dim:
+    values: [256, 512, 1024, 2048]
+  lambda_kldiv:
+    distribution: log_uniform_values
+    min: 0.001
+    max: 0.1
+  learning_rate:
+    distribution: log_uniform_values
+    min: 0.0001
+    max: 0.01
+  batch_size:
+    values: [16, 32, 64, 128]
+  sample_frac:
+    value: 0.5
