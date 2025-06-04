@@ -3,21 +3,25 @@ project: mesenchymal-states
 method: random
 metric:
   goal: minimize
-  name: val_pred_loss
+  name: val_loss
 parameters:
   n_layers:
-    values: [3, 5, 8, 10]
+    values: [3, 5, 8]
   hidden_dim:
-    values: [256, 512, 1024, 2048]
-  lambda_kldiv:
-    distribution: log_uniform_values
-    min: 0.001
-    max: 0.1
+    values: [256, 512, 1024]
   learning_rate:
     distribution: log_uniform_values
-    min: 0.0001
-    max: 0.01
+    min: 0.000001
+    max: 0.001
   batch_size:
-    values: [16, 32, 64, 128]
+    values: [16, 32, 64]
+  optimizer:
+    values: ["sgd", "adam"]
   sample_frac:
-    value: 0.5
+    value: 0.33
+  max_epochs:
+    value: 50
+early_terminate:
+  type: hyperband
+  min_iter: 10
+  max_iter: 50
