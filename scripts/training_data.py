@@ -5,7 +5,6 @@ import pandas as pd
 import scanpy as sc
 import anndata as ad
 from scipy.sparse import csr_matrix
-from sklearn.preprocessing import StandardScaler
 np.random.seed(1)
 
 # datasets summary
@@ -37,7 +36,6 @@ for key in adata_dict:
     for i, (source, df) in enumerate(feat_dict.items()):
         name = f'{source}_signature'
         sc.tl.score_genes(adata, df[species], score_name = name, ctrl_as_ref = True)
-        adata.obs[name] = StandardScaler().fit_transform(adata.obs[name].values.reshape(-1, 1))
         adata.obsm['X_signature'][:, i] = adata.obs[name].values
 
     # scaled features (sparse)

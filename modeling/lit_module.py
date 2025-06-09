@@ -1,81 +1,105 @@
-import torch, wandb
+import wandb
 import lightning as L
 import scanpy as sc
-from torch.optim import SGD, Adam
 import torch.nn.functional as F
-from torchmetrics.functional.classification import multiclass_f1_score
+from torch.optim import SGD, Adam
 import matplotlib.pyplot as plt
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
 
 class MesenchymalStates(L.LightningModule):
     def __init__(self, hparams, model):
         super().__init__()
         self.save_hyperparameters(hparams)
         self.model = model
+        self.pca = PCA()
 
     def forward(self, x):
         return self.model(x)
 
-    def compute_metrics(self, y, c, w, y_pred, c_logits):
-        clf_rand = torch.log(torch.tensor(float(c_logits.size(-1)), device = self.device))
-        metric_dict = {
-            'reg_loss'    : 1 - F.cosine_similarity(y_pred, y, dim = -1),
-            'clf_loss'    : F.cross_entropy(c_logits, c, reduction = 'none') / clf_rand,
-            'mse_loss'    : F.mse_loss(y_pred, y, reduction = 'none').mean(dim = -1),
-            'clf_f1score' : multiclass_f1_score(c_logits, c, c_logits.size(-1))
-            }
-        metric_dict['loss'] = w * (metric_dict['reg_loss'] + metric_dict['clf_loss'])
-        return {key : val.mean() if 'loss' in key else val for key, val in metric_dict.items()}
+    def compute_loss(self, y, y_pred, w):
+        loss = F.mse_loss(y_pred, y, reduction = 'none').mean(dim = -1)
+        return (w * loss).mean()
 
     def training_step(self, batch, _):
-        outs = self.forward(batch[0])
-        metric_dict = self.compute_metrics(*batch[1:], *outs[:-1])
-        for key in metric_dict:
-            self.log(
-                f'train_{key}',
-                metric_dict[key],
-                on_step = False,
-                on_epoch = True,
-                batch_size = batch[0].size(0),
-                sync_dist = True,
-                add_dataloader_idx = False
-                )
-        return metric_dict['loss']
+        X, y, w = batch
+        y_pred, _ = self.forward(X)
+        loss = self.compute_loss(y, y_pred, w)
+        self.log(
+            'train_loss', loss,
+            on_step = False,
+            on_epoch = True,
+            batch_size = X.size(0),
+            sync_dist = True,
+            add_dataloader_idx = False
+            )
+        return loss
     
     def validation_step(self, batch, _):
-        outs = self.forward(batch[0])
-        metric_dict = self.compute_metrics(*batch[1:], *outs[:-1])
-        for key in metric_dict:
-            self.log(
-                f'val_{key}',
-                metric_dict[key],
-                on_step = False,
-                on_epoch = True,
-                batch_size = batch[0].size(0),
-                sync_dist = True,
-                add_dataloader_idx = False
-                )
+        X, y, w = batch
+        y_pred, _ = self.forward(X)
+        loss = self.compute_loss(y, y_pred, w)
+        self.log(
+            'val_loss', loss,
+            on_step = False,
+            on_epoch = True,
+            batch_size = X.size(0),
+            sync_dist = True,
+            add_dataloader_idx = False
+            )
 
     def on_validation_epoch_end(self):
         if (self.current_epoch > 0) and (self.current_epoch % self.hparams.val_plot_freq == 0):
             adata  = self.trainer.val_dataloaders.dataset.adata
-            X = next(iter(self.trainer.val_dataloaders))[0].to(self.device) 
-            adata.obsm['X_latent'] = self.forward(X)[-1].detach().cpu().numpy()
+            X = next(iter(self.trainer.val_dataloaders))[0].to(self.device)
+            adata.obsm['X_latent'] = self.forward(X)[1].detach().cpu().numpy()
+            latents_scaled = StandardScaler().fit_transform(adata.obsm['X_latent'])
+            adata.obsm['X_latent_pca'] = self.pca.fit_transform(latents_scaled)
 
+            groups = ['Splanchnic Mesoderm',
+                      'Posterior Epiblast',
+                      'Lateral Plate Mesoderm',
+                      'Definitive Endoderm',
+                      'Cranial Mesenchyme',
+                      'Cranial Neural Crest',
+                      'Trunk Neural Crest',
+                      'Neuromesodermal Progenitor',
+                      'Presomitic Mesoderm',
+                      'Premigratory Neural Crest',
+                      'Migratory Neural Crest'
+                      ]
+            
             # plot celltype
-            fig, ax = plt.subplots(1, 1, figsize = (10, 10))
-            sc.pl.embedding(adata, 'X_latent', color = 'celltype', size = 50, legend_loc = 'on data', ax = ax, show = False)
-            ax.set_box_aspect(1); fig.tight_layout()
-            self.logger.experiment.log({'val_latent_celltype' : wandb.Image(fig), 'epoch' : self.current_epoch})
+            fig, ax = plt.subplots(1, 1, figsize = (10, 7))
+            sc.pl.embedding(
+                adata, 'X_latent_pca',
+                color = 'celltype',
+                groups = groups,
+                size = 100,
+                ax = ax,
+                show = False)
+            fig.tight_layout()
+            self.logger.experiment.log({
+                'val_latent_celltype' : wandb.Image(fig),
+                'epoch'               : self.current_epoch
+                })
             plt.close(fig)
 
             # plot signatures
             colors = [col for col in adata.obs.columns if 'signature' in col]
-            sc.pl.embedding(adata, 'X_latent', color = colors, cmap = 'seismic', vcenter = 0, show = False)
-            self.logger.experiment.log({'val_latent_signatures' : wandb.Image(plt.gcf()), 'epoch' : self.current_epoch})
-            plt.close(plt.gcf())
+            sc.pl.embedding(
+                adata, 'X_latent_pca',
+                color = colors,
+                cmap = 'inferno',
+                size = 80,
+                show = False)
+            fig = plt.gcf()
+            self.logger.experiment.log({
+                'val_latent_signatures' : wandb.Image(fig),
+                'epoch'                 : self.current_epoch
+                })
+            plt.close(fig)
 
     def configure_optimizers(self):
-        if self.hparams.optimizer == 'adam':
-            return Adam(self.parameters(), lr = self.hparams.learning_rate)
-        elif self.hparams.optimizer == 'sgd':
-            return SGD(self.parameters(), lr = self.hparams.learning_rate)
+        return Adam(self.parameters(), lr = self.hparams.learning_rate)
+

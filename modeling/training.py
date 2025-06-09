@@ -1,6 +1,5 @@
 import os, argparse
 import lightning as L
-import numpy as np
 import anndata as ad
 from torch.utils.data import DataLoader
 from lightning.pytorch.loggers import WandbLogger
@@ -14,22 +13,21 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     # hyperparameters
-    parser.add_argument('--n_layers', type = int, default = 5)
-    parser.add_argument('--hidden_dim', type = int, default = 512)
-    parser.add_argument('--learning_rate', type = float, default = 1e-4)
+    parser.add_argument('--n_layers', type = int, default = 8)
+    parser.add_argument('--hidden_dim', type = int, default = 2048)
+    parser.add_argument('--learning_rate', type = float, default = 0.0005)
     parser.add_argument('--batch_size', type = int, default = 32)
-    parser.add_argument('--optimizer', type = str, default = 'adam')
 
     # other
+    parser.add_argument('--patience', type = int, default = 10)
+    parser.add_argument('--min_delta', type = float, default = 1e-3)
+    parser.add_argument('--max_epochs', type = int, default = 100)
+    parser.add_argument('--gradient_clip_val', type = float, default = 1.)
     parser.add_argument('--sample_frac', type = float, default = 1.)
     parser.add_argument('--save_ckpt', type = bool, default = False)
     parser.add_argument('--val_plot_freq', type = int, default = 10)
-    parser.add_argument('--patience', type = int, default = 10)
-    parser.add_argument('--min_delta', type = float, default = .01)
-    parser.add_argument('--clip_val', type = float, default = 1.)
     parser.add_argument('--latent_dim', type = int, default = 2)
     parser.add_argument('--num_workers', type = int, default = 32)
-    parser.add_argument('--max_epochs', type = int, default = 200)
     args = parser.parse_args()
 
     L.seed_everything(1)
@@ -63,11 +61,10 @@ if __name__ == '__main__':
         pin_memory = True
         )
 
-    # dual-headed encoder
+    # encoder -> regressor
     model = MesNet(
         input_dim = adata.shape[1],
         target_dim = adata.obsm['X_signature'].shape[1],
-        num_classes = adata.obs.celltype.cat.categories.size,
         hidden_dim = args.hidden_dim,
         n_layers = args.n_layers,
         latent_dim = args.latent_dim
@@ -109,7 +106,7 @@ if __name__ == '__main__':
         devices = 'auto',
         num_sanity_val_steps = 0,
         enable_checkpointing = args.save_ckpt,
-        gradient_clip_val = args.clip_val
+        gradient_clip_val = args.gradient_clip_val
         )
 
     # train
