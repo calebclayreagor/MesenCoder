@@ -6,9 +6,9 @@ metric:
   name: val_loss
 parameters:
   n_layers:
-    values: [3, 4, 5, 6, 7, 8]
+    values: [2, 4, 8, 16]
   hidden_dim:
-    values: [128, 256, 512, 1024, 2048]
+    values: [256, 512, 1024, 2048]
   learning_rate:
     distribution: log_uniform_values
     min: 0.00001

@@ -1,7 +1,7 @@
 import torch.nn as nn
 
 class MesNet(nn.Module):
-    def __init__(self, input_dim, target_dim, hidden_dim, n_layers, latent_dim = 2):
+    def __init__(self, input_dim, target_dim, hidden_dim, n_layers, latent_dim):
         super().__init__()
         self.encoder = self.make_layers(input_dim, hidden_dim, n_layers, latent_dim)
         self.output = nn.Linear(latent_dim, target_dim)

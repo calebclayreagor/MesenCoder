@@ -5,7 +5,7 @@ import numpy as np
 class MesenchymeDataset(Dataset):
     def __init__(self, adata):
         self.adata = adata
-        self.X = adata.X.toarray()
+        self.X = adata.X.toarray().astype(np.float32)
         self.y = adata.obsm['X_signature'].astype(np.float32)
         self.w = adata.obs.weight.values.astype(np.float32)
 

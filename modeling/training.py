@@ -14,8 +14,8 @@ if __name__ == '__main__':
 
     # hyperparameters
     parser.add_argument('--n_layers', type = int, default = 8)
-    parser.add_argument('--hidden_dim', type = int, default = 2048)
-    parser.add_argument('--learning_rate', type = float, default = 0.0005)
+    parser.add_argument('--hidden_dim', type = int, default = 1024)
+    parser.add_argument('--learning_rate', type = float, default = 3e-4)
     parser.add_argument('--batch_size', type = int, default = 32)
 
     # other
@@ -26,7 +26,7 @@ if __name__ == '__main__':
     parser.add_argument('--sample_frac', type = float, default = 1.)
     parser.add_argument('--save_ckpt', type = bool, default = False)
     parser.add_argument('--val_plot_freq', type = int, default = 10)
-    parser.add_argument('--latent_dim', type = int, default = 2)
+    parser.add_argument('--latent_dim', type = int, default = 3)
     parser.add_argument('--num_workers', type = int, default = 32)
     args = parser.parse_args()
 
@@ -61,7 +61,7 @@ if __name__ == '__main__':
         pin_memory = True
         )
 
-    # encoder -> regressor
+    # encoder -> n-dim latents -> regressor
     model = MesNet(
         input_dim = adata.shape[1],
         target_dim = adata.obsm['X_signature'].shape[1],

@@ -5,6 +5,7 @@ import pandas as pd
 import scanpy as sc
 import anndata as ad
 from scipy.sparse import csr_matrix
+from sklearn.preprocessing import StandardScaler
 np.random.seed(1)
 
 # datasets summary
@@ -38,10 +39,6 @@ for key in adata_dict:
         sc.tl.score_genes(adata, df[species], score_name = name, ctrl_as_ref = True)
         adata.obsm['X_signature'][:, i] = adata.obs[name].values
 
-    # scaled features (sparse)
-    sc.pp.scale(adata)
-    adata.X = csr_matrix(adata.X)
-
     # mouse genes (homologs)
     if species != 'mmusculus':
         var_dict = feat_union.set_index(species).mmusculus.to_dict()
@@ -63,6 +60,10 @@ adata = ad.concat(adata_dict, join = 'outer', merge = 'same', label = 'source')
 adata.obs_names_make_unique()
 adata.obs['weight'] = adata.shape[0] / adata.obs.n_celltype
 adata.obs['weight'] = adata.obs.weight / adata.obs.weight.mean()
+
+# scale features, targets
+sc.pp.scale(adata); adata.X = csr_matrix(adata.X)
+adata.obsm['X_signature'] = StandardScaler().fit_transform(adata.obsm['X_signature'])
 adata.write(os.path.join('..', 'data', 'modeling', 'training.h5ad'))
 
 #%%
