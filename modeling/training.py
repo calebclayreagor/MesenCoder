@@ -20,13 +20,13 @@ if __name__ == '__main__':
 
     # other
     parser.add_argument('--patience', type = int, default = 10)
-    parser.add_argument('--min_delta', type = float, default = 1e-3)
+    parser.add_argument('--min_delta', type = float, default = 1e-2)
     parser.add_argument('--max_epochs', type = int, default = 100)
     parser.add_argument('--gradient_clip_val', type = float, default = 1.)
     parser.add_argument('--sample_frac', type = float, default = 1.)
     parser.add_argument('--save_ckpt', type = bool, default = False)
     parser.add_argument('--val_plot_freq', type = int, default = 10)
-    parser.add_argument('--latent_dim', type = int, default = 3)
+    parser.add_argument('--latent_dim', type = int, default = 2)
     parser.add_argument('--num_workers', type = int, default = 32)
     args = parser.parse_args()
 

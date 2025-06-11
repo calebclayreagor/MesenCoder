@@ -63,7 +63,7 @@ adata.obs['weight'] = adata.obs.weight / adata.obs.weight.mean()
 
 # scale features, targets
 sc.pp.scale(adata); adata.X = csr_matrix(adata.X)
-adata.obsm['X_signature'] = StandardScaler().fit_transform(adata.obsm['X_signature'])
+adata.obsm['X_signature'] = StandardScaler().fit_transform(adata.obsm['X_signature'], sample_weight = adata.obs['weight'])
 adata.write(os.path.join('..', 'data', 'modeling', 'training.h5ad'))
 
 #%%
