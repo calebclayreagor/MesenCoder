@@ -1,7 +1,7 @@
-Source,Name,Species,Age,Split,Description
-GSE136689,Splanchnic Mesoderm,mmusculus,E8.5-9.5,Training,Foregut organogenesis dataset showing interactions between splanchnic mesoderm and definitive endoderm
-GSE162534,Primitive Streak,mmusculus,Early-Late Streak,Training,Gastrulation dataset analyzing EMT programs during endodermal and mesodermal specification
-GSE201257,Schwann Cell Precursor,mmusculus,E9.5-Adult,Training,Neural crest cell atlas describing diversification of glial-cell lineages from neurulation to adulthood
-GSE229103,Neuromesodermal Progenitor,mmusculus,E8.5,Training,Developmental dataset describing bipotent neuromesodermal progenitors in the elongating caudal trunk
-HCAEmbryonicHindlimb,Embryonic Hindlimb,hsapiens,PCW5-9,Training,Embryonic hindlimb atlas focusing on spatial and temporal gene expression programs
-rRNAModifications,Cranial Neural Crest,mmusculus,E8.5-10.5,Training,Neural crest cell dataset showing the bifurcation between cranial mesenchyme and neural crest
+Source,Name,Species,Age,Split,Method,Description
+GSE136689,Splanchnic Mesoderm,mmusculus,E8.5-9.5,Training,Droplet,Foregut organogenesis dataset showing interactions between splanchnic mesoderm and definitive endoderm
+GSE162534,Primitive Streak,mmusculus,Early-Late Streak,Training,Droplet,Gastrulation dataset analyzing EMT programs during endodermal and mesodermal specification
+GSE201257,Schwann Cell Precursor,mmusculus,E9.5-Adult,Training,Plate,Neural crest cell atlas describing diversification of glial-cell lineages from neurulation to adulthood
+GSE229103,Neuromesodermal Progenitor,mmusculus,E8.5,Training,Droplet,Developmental dataset describing bipotent neuromesodermal progenitors in the elongating caudal trunk
+HCAEmbryonicHindlimb,Embryonic Hindlimb,hsapiens,PCW5-9,Training,Droplet,Embryonic hindlimb atlas focusing on spatial and temporal gene expression programs
+rRNAModifications,Cranial Neural Crest,mmusculus,E8.5-10.5,Training,Plate,Neural crest cell dataset showing the bifurcation between cranial mesenchyme and neural crest

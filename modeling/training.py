@@ -12,22 +12,22 @@ from model import MesNet
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
-    # hyperparameters
-    parser.add_argument('--n_layers', type = int, default = 8)
+    # CLI parameters
+    parser.add_argument('--n_layers', type = int, default = 2)
     parser.add_argument('--hidden_dim', type = int, default = 1024)
+    parser.add_argument('--lambda_pull', type = float, default = .1)
+    parser.add_argument('--latent_dim', type = int, default = 2)
     parser.add_argument('--learning_rate', type = float, default = 3e-4)
     parser.add_argument('--batch_size', type = int, default = 32)
-
-    # other
     parser.add_argument('--patience', type = int, default = 10)
     parser.add_argument('--min_delta', type = float, default = 1e-2)
     parser.add_argument('--max_epochs', type = int, default = 100)
+    parser.add_argument('--val_plot_freq', type = int, default = 10)
     parser.add_argument('--gradient_clip_val', type = float, default = 1.)
     parser.add_argument('--sample_frac', type = float, default = 1.)
     parser.add_argument('--save_ckpt', type = bool, default = False)
-    parser.add_argument('--val_plot_freq', type = int, default = 10)
-    parser.add_argument('--latent_dim', type = int, default = 2)
     parser.add_argument('--num_workers', type = int, default = 32)
+    parser.add_argument('--wandb_project', type = str, default = 'MesNet')
     args = parser.parse_args()
 
     L.seed_everything(1)
@@ -51,31 +51,27 @@ if __name__ == '__main__':
         batch_size = args.batch_size,
         shuffle = True,
         num_workers = args.num_workers,
-        pin_memory = True
-        )
+        pin_memory = True)
     val_dl = DataLoader(
         val_ds,
         batch_size = len(val_ds),
         shuffle = False,
         num_workers = 1,
-        pin_memory = True
-        )
+        pin_memory = True)
 
-    # encoder -> n-dim latents -> regressor
+    # encoder/decoder
     model = MesNet(
         input_dim = adata.shape[1],
-        target_dim = adata.obsm['X_signature'].shape[1],
+        n_source = adata.obs.source.cat.categories.nunique(),
         hidden_dim = args.hidden_dim,
         n_layers = args.n_layers,
-        latent_dim = args.latent_dim
-        )
+        latent_dim = args.latent_dim)
     lit_model = MesenchymalStates(args, model)
 
     # wandb logger
     logger = WandbLogger(
-        project = 'mesenchymal-states',
-        log_model = args.save_ckpt
-        )
+        project = args.wandb_project,
+        log_model = args.save_ckpt)
     logger.watch(lit_model, log = 'all')
 
     # callbacks
@@ -84,18 +80,14 @@ if __name__ == '__main__':
             monitor = 'val_loss',
             patience = args.patience,
             min_delta = args.min_delta,
-            mode = 'min'
-            )
-        ]
+            mode = 'min')]
     if args.save_ckpt:
         callbacks.append(
             ModelCheckpoint(
                 monitor = 'val_loss',
                 dirpath = 'checkpoints',
                 save_top_k = 1,
-                filename = '{epoch}-{val_loss:.4f}'
-                )
-            )
+                filename = '{epoch}-{val_loss:.4f}'))
 
     # trainer
     trainer = L.Trainer(
@@ -106,8 +98,7 @@ if __name__ == '__main__':
         devices = 'auto',
         num_sanity_val_steps = 0,
         enable_checkpointing = args.save_ckpt,
-        gradient_clip_val = args.gradient_clip_val
-        )
+        gradient_clip_val = args.gradient_clip_val)
 
     # train
     trainer.fit(lit_model, train_dl, val_dl)
