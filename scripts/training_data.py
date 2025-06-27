@@ -43,7 +43,7 @@ for key in adata_dict:
         var_dict = feat_union.set_index(species).mmusculus.to_dict()
         adata.var_names = adata.var_names.map(var_dict)
 
-    # training/validation split
+    # training/validation split (celltype stratify)
     celltype_df = adata.obs.groupby('celltype')
     train_ix = celltype_df.sample(frac = train_frac).index
     adata.obs['training'] = adata.obs.index.isin(train_ix).astype(str)

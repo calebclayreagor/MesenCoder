@@ -27,47 +27,55 @@ class MesNet(nn.Module):
             n_layers = n_layers,
             output_dim = input_dim)
         
-        # scaling & correction
+        # scaling (x/src/z/out)
         self.scale_x = nn.Parameter(torch.zeros(input_dim))
         self.scale_src = nn.Parameter(torch.zeros(n_source))
         self.scale_z = nn.Parameter(torch.zeros(latent_dim))
         self.scale_out = nn.Parameter(torch.zeros(input_dim))
+
+        # correction (src/z)
+        self.residual_src = nn.Linear(n_source, n_source)
         self.residual_z = nn.Linear(latent_dim, latent_dim)
 
-        # noise (learnable)
+        # noise (x/src/z)
         self.mu_x = nn.Parameter(torch.zeros(input_dim))
-        self.logvar_x = nn.Parameter(torch.zeros(input_dim))
         self.mu_src = nn.Linear(n_source, n_source)
-        self.logvar_src = nn.Linear(n_source, n_source)
         self.mu_z = nn.Parameter(torch.zeros(latent_dim))
+        self.logvar_x = nn.Parameter(torch.zeros(input_dim))
+        self.logvar_src = nn.Linear(n_source, n_source)
         self.logvar_z = nn.Parameter(torch.zeros(latent_dim))
         self._initialize_weights()
 
     def forward(self, x: torch.Tensor, src: torch.Tensor
                 ) -> tuple[torch.Tensor, torch.Tensor]:
+        
         # features (+ noise/scaling)
         std = torch.exp(.5 * self.logvar_x)
         eps = torch.randn_like(x)
         x = x + self.mu_x + std * eps
         x = x * self.scale_x.exp()
 
-        # domain labels (+ noise/scaling)
+        # domain labels (+ noise/correction/scaling)
         src = F.one_hot(src, self.n_source).float()
         std = torch.exp(.5 * self.logvar_src(src))
         eps = torch.randn_like(src)
         src = src + self.mu_src(src) + std * eps
+        src = src + self.residual_src(src)
         src = src * self.scale_src.exp()
 
         # conditional encoder
         x_cond = torch.cat((x, src), dim = -1)
         z = self.encoder(x_cond)
 
-        # latents (+ noise/correction/scaling)
+        # latents (+ noise/correction/scaling/constraint)
         std = torch.exp(.5 * self.logvar_z)
         eps = torch.randn_like(z)
         z = z + self.mu_z + std * eps
         z = z + self.residual_z(z)
         z = z * self.scale_z.exp()
+        z_norm = torch.norm(z, dim = -1, keepdim = True)
+        z_scale = torch.log1p(z_norm)
+        z = z * (z_scale / (z_norm + 1e-9))
 
         # conditional decoder (+ scaling)
         z_cond = torch.cat((z, src), dim = -1)

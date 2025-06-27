@@ -18,10 +18,10 @@ if __name__ == '__main__':
     parser.add_argument('--latent_dim', type = int, default = 2)
     parser.add_argument('--learning_rate', type = float, default = 1e-3)
     parser.add_argument('--batch_size', type = int, default = 128)
-    parser.add_argument('--patience', type = int, default = 30)
+    parser.add_argument('--patience', type = int, default = 10)
     parser.add_argument('--min_delta', type = float, default = 1e-4)
-    parser.add_argument('--max_epochs', type = int, default = 200)
-    parser.add_argument('--val_plot_freq', type = int, default = 10)
+    parser.add_argument('--max_epochs', type = int, default = 100)
+    parser.add_argument('--val_log_freq', type = int, default = 10)
     parser.add_argument('--sample_frac', type = float, default = 1.)
     parser.add_argument('--save_ckpt', type = bool, default = False)
     parser.add_argument('--num_workers', type = int, default = 32)
@@ -88,10 +88,12 @@ if __name__ == '__main__':
     if args.save_ckpt:
         callbacks.append(
             ModelCheckpoint(
-                monitor = 'val_loss',
-                dirpath = 'checkpoints',
-                save_top_k = 1,
-                filename = '{epoch}-{val_loss:.4f}'))
+                every_n_epochs = args.val_log_freq,
+                save_top_k = -1,
+                save_last = False,
+                dirpath = os.path.join(
+                    'checkpoints', args.wandb_project),
+                filename = '{epoch:02d}'))
 
     # trainer
     trainer = L.Trainer(
