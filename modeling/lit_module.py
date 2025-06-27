@@ -14,75 +14,58 @@ class MesenchymalStates(L.LightningModule):
 
     def forward(self, x, src):
         return self.model(x, src)
+    
+    def custom_step(self, batch):
+        X, src, w = batch
+        X_hat, _ = self.forward(X, src)
+        loss = F.mse_loss(X_hat, X, reduction = 'none')
+        loss = w * loss.mean(-1)
+        return loss.mean()
 
     def training_step(self, batch, _):
-        (X1, src1, w1), (X2, src2, w2) = batch
-        X1_hat, z1 = self.forward(X1, src1)
-        _, z2 = self.forward(X2, src2)
-        recon_loss = w1 * F.mse_loss(X1_hat, X1, reduction = 'none').mean(-1)
-        w_avg = (w1 + w2) / 2
-        pull_loss = w_avg * F.mse_loss(z2, z1, reduction = 'none').mean(-1)
-        loss = (recon_loss + self.hparams.lambda_pull * pull_loss).mean()
+        loss = self.custom_step(batch)
+        batch_size = batch[0].size(0)
         self.log(
             'train_loss', loss,
             on_step = False,
             on_epoch = True,
-            batch_size = X1.size(0),
+            batch_size = batch_size,
             sync_dist = True,
-            add_dataloader_idx = False
-            )
+            add_dataloader_idx = False)
         return loss
     
     def validation_step(self, batch, _):
-        (X1, src1, w1), (X2, src2, w2) = batch
-        X1_hat, z1 = self.forward(X1, src1)
-        _, z2 = self.forward(X2, src2)
-        recon_loss = w1 * F.mse_loss(X1_hat, X1, reduction = 'none').mean(-1)
-        w_avg = (w1 + w2) / 2
-        pull_loss = w_avg * F.mse_loss(z2, z1, reduction = 'none').mean(-1)
-        loss = (recon_loss + self.hparams.lambda_pull * pull_loss).mean()
+        loss = self.custom_step(batch)
+        batch_size = batch[0].size(0)
         self.log(
             'val_loss', loss,
             on_step = False,
             on_epoch = True,
-            batch_size = X1.size(0),
+            batch_size = batch_size,
             sync_dist = True,
-            add_dataloader_idx = False
-            )
+            add_dataloader_idx = False)
 
     def on_validation_epoch_end(self):
         if (self.current_epoch > 0) and (self.current_epoch % self.hparams.val_plot_freq == 0):
             adata  = self.trainer.val_dataloaders.dataset.adata
-            X, src, _ = next(iter(self.trainer.val_dataloaders))[0]
+            X, src, _ = next(iter(self.trainer.val_dataloaders))
             X = X.to(self.device)
             src = torch.zeros_like(src, device = self.device)
             _, z = self.forward(X, src)
             adata.obsm['X_latent'] = z.detach().cpu().numpy()
             
-            # mesenchymal celltypes
-            groups = ['Splanchnic Mesoderm',
-                      'Lateral Plate Mesoderm',
-                      'Cranial Mesenchyme',
-                      'Cranial Neural Crest',
-                      'Trunk Neural Crest',
-                      'Neuromesodermal Progenitor',
-                      'Presomitic Mesoderm',
-                      'Premigratory Neural Crest',
-                      'Migratory Neural Crest']
-            
             # plot celltypes
             fig, ax = plt.subplots(1, 1, figsize = (10, 7))
-            group_msk = adata.obs.celltype.isin(groups)
             sc.pl.embedding(
-                adata, 'X_latent',
+                adata[~adata.obs.trajectory],
+                'X_latent',
                 size = 100,
                 ax = ax,
                 show = False)
             sc.pl.embedding(
-                adata[group_msk],
+                adata[adata.obs.trajectory],
                 'X_latent',
                 color = 'celltype',
-                groups = groups,
                 add_outline = True,
                 size = 100,
                 ax = ax,

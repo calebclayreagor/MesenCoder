@@ -14,16 +14,14 @@ if __name__ == '__main__':
 
     # CLI parameters
     parser.add_argument('--n_layers', type = int, default = 2)
-    parser.add_argument('--hidden_dim', type = int, default = 1024)
-    parser.add_argument('--lambda_pull', type = float, default = .1)
+    parser.add_argument('--hidden_dim', type = int, default = 256)
     parser.add_argument('--latent_dim', type = int, default = 2)
-    parser.add_argument('--learning_rate', type = float, default = 3e-4)
-    parser.add_argument('--batch_size', type = int, default = 32)
-    parser.add_argument('--patience', type = int, default = 10)
-    parser.add_argument('--min_delta', type = float, default = 1e-2)
-    parser.add_argument('--max_epochs', type = int, default = 100)
+    parser.add_argument('--learning_rate', type = float, default = 1e-3)
+    parser.add_argument('--batch_size', type = int, default = 128)
+    parser.add_argument('--patience', type = int, default = 30)
+    parser.add_argument('--min_delta', type = float, default = 1e-4)
+    parser.add_argument('--max_epochs', type = int, default = 200)
     parser.add_argument('--val_plot_freq', type = int, default = 10)
-    parser.add_argument('--gradient_clip_val', type = float, default = 1.)
     parser.add_argument('--sample_frac', type = float, default = 1.)
     parser.add_argument('--save_ckpt', type = bool, default = False)
     parser.add_argument('--num_workers', type = int, default = 32)
@@ -38,8 +36,14 @@ if __name__ == '__main__':
     adata_train = adata[train_ix]
     adata_val = adata[~train_ix]
     if args.sample_frac < 1:
-        train_sample_ix = adata_train.obs.groupby('celltype').sample(frac = args.sample_frac).index
-        val_sample_ix = adata_val.obs.groupby('celltype').sample(frac = args.sample_frac).index
+        train_sample_ix = (adata_train.obs
+                           .groupby('celltype')
+                           .sample(frac = args.sample_frac)
+                           .index)
+        val_sample_ix = (adata_val.obs
+                         .groupby('celltype')
+                         .sample(frac = args.sample_frac)
+                         .index)
         adata_train = adata_train[train_sample_ix]
         adata_val = adata_val[val_sample_ix]
     train_ds = MesenchymeDataset(adata_train)
@@ -59,7 +63,7 @@ if __name__ == '__main__':
         num_workers = 1,
         pin_memory = True)
 
-    # encoder/decoder
+    # conditional autoencoder
     model = MesNet(
         input_dim = adata.shape[1],
         n_source = adata.obs.source.cat.categories.nunique(),
@@ -97,8 +101,7 @@ if __name__ == '__main__':
         accelerator = 'auto',
         devices = 'auto',
         num_sanity_val_steps = 0,
-        enable_checkpointing = args.save_ckpt,
-        gradient_clip_val = args.gradient_clip_val)
+        enable_checkpointing = args.save_ckpt)
 
     # train
     trainer.fit(lit_model, train_dl, val_dl)
