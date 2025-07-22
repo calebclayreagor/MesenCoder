@@ -1,21 +1,27 @@
-import os, argparse
+import argparse
 import torch
 import wandb
 import lightning as L
 import scanpy as sc
-import torch.nn as nn
 import torch.nn.functional as F
 from torch.optim import Adam
 from torch.optim import Optimizer
 import matplotlib.pyplot as plt
+from model import MesNet
 
 class MesenchymalStates(L.LightningModule):
     def __init__(self, 
                  hparams: argparse.Namespace,
-                 model: nn.Module):
+                 out_pth: str = None):
         super().__init__()
         self.save_hyperparameters(hparams)
-        self.model = model
+        self.model = MesNet(
+            input_dim = self.hparams.input_dim,
+            n_source = self.hparams.n_source,
+            hidden_dim = self.hparams.hidden_dim,
+            n_layers = self.hparams.n_layers,
+            latent_dim = self.hparams.latent_dim)
+        self.out_pth = out_pth
 
     def forward(self, x: torch.Tensor, src: torch.Tensor
                 ) -> tuple[torch.Tensor, torch.Tensor]:
@@ -98,20 +104,18 @@ class MesenchymalStates(L.LightningModule):
                     'epoch'               : self.current_epoch})
                 plt.close(fig)
 
-    def on_predict_epoch_end(self, _) -> None:
+    def on_predict_epoch_end(self) -> None:
         adata = self.trainer.predict_dataloaders.dataset.adata
         X, src, _ = next(iter(self.trainer.predict_dataloaders))
         X = X.to(self.device)
         src = torch.zeros_like(src, device = self.device)
         X_hat, z = self.forward(X, src)
         adata.obsm['X_latent'] = z.detach().cpu().numpy()
-        adata.layers['VAE'] = X_hat.detach().cpu().numpy()
-        if self.hparams.save_weights:
-            adata.varm['VAE_logvar'] = self.model.logvar_x.detach().cpu().numpy()
-            adata.varm['VAE_mu'] = self.model.mu_x.detach().cpu().numpy()
-            adata.varm['VAE_scale'] = self.model.scale_x.detach().cpu().numpy()
-            adata.varm['VAE_scale_out'] = self.model.scale_out.detach().cpu().numpy()
-        adata.write(os.path.join(self.hparams.pth_out, self.hparams.name_out))
+        adata.layers['MesNet'] = X_hat.detach().cpu().numpy()
+        adata.varm['MesNet_logvar'] = self.model.logvar_x.detach().cpu().numpy()
+        adata.varm['MesNet_mu'] = self.model.mu_x.detach().cpu().numpy()
+        adata.varm['MesNet_scale'] = self.model.scale_x.detach().cpu().numpy()
+        adata.write(self.out_pth)
 
     def configure_optimizers(self) -> Optimizer:
         return Adam(self.parameters(), lr = self.hparams.learning_rate)

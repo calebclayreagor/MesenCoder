@@ -7,7 +7,6 @@ from lightning.pytorch.callbacks import ModelCheckpoint
 from lightning.pytorch.callbacks import EarlyStopping
 from lit_module import MesenchymalStates
 from dataset import MesenchymeDataset
-from model import MesNet
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -64,19 +63,15 @@ if __name__ == '__main__':
         pin_memory = True)
 
     # conditional autoencoder
-    model = MesNet(
-        input_dim = adata.shape[1],
-        n_source = adata.obs.source.cat.categories.nunique(),
-        hidden_dim = args.hidden_dim,
-        n_layers = args.n_layers,
-        latent_dim = args.latent_dim)
-    lit_model = MesenchymalStates(args, model)
+    args.input_dim = adata.shape[1]
+    args.n_source = adata.obs.source.cat.categories.nunique()
+    model = MesenchymalStates(args)
 
     # wandb logger
     logger = WandbLogger(
         project = args.wandb_project,
         log_model = args.save_ckpt)
-    logger.watch(lit_model, log = 'all')
+    logger.watch(model, log = 'all')
 
     # callbacks
     callbacks = [
@@ -106,4 +101,4 @@ if __name__ == '__main__':
         enable_checkpointing = args.save_ckpt)
 
     # train
-    trainer.fit(lit_model, train_dl, val_dl)
+    trainer.fit(model, train_dl, val_dl)
