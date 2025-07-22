@@ -11,6 +11,7 @@ train_frac = .8
 
 # datasets summary
 summary_df = pd.read_csv(os.path.join('..', 'data', 'summary.csv'), index_col = 0)
+summary_df = summary_df.loc[summary_df.Split == 'Training']
 species_dict = summary_df.Species.to_dict()
 
 # processed datasets

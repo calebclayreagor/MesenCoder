@@ -5,3 +5,4 @@ GSE201257,Schwann Cell Precursor,mmusculus,E9.5-Adult,Training,Neural crest cell
 GSE229103,Neuromesodermal Progenitor,mmusculus,E8.5,Training,Developmental dataset describing bipotent neuromesodermal progenitors in the elongating caudal trunk
 HCAEmbryonicHindlimb,Embryonic Hindlimb,hsapiens,PCW5-9,Training,Embryonic hindlimb atlas focusing on spatial and temporal gene expression programs
 rRNAModifications,Cranial Neural Crest,mmusculus,E8.5-10.5,Training,Neural crest cell dataset showing the bifurcation between cranial mesenchyme and neural crest
+_3CA_Neuroendocrine,Neuroendocrine Cancer,hsapiens,Multiple,Testing,Malignant neuroendocrine datasets including neuroblastoma and GI neuroendocrine tumor samples
