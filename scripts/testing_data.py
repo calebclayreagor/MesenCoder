@@ -56,7 +56,7 @@ adata.obs['weight'] = 1.
 adata_train = sc.read_h5ad(os.path.join('..', 'data', 'modeling', 'training.h5ad'))
 adata_test = ad.AnnData(X = csr_matrix((adata.shape[0], adata_train.shape[1]), dtype = adata.X.dtype))
 adata_test.var = adata_train.var.copy()
-adata_test.obs = adata.obs.copy()
+adata_test.obs = adata.obs.astype(str)
 adata_test.obs['celltype'] = adata_test.obs.cell_type
 adata_test[:, adata.var_names].X = adata.X
 adata_test.obs_names_make_unique()

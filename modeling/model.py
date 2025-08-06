@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-class MesNet(nn.Module):
+class MesenCoder(nn.Module):
     def __init__(self,
                  input_dim: int,
                  n_source: int,

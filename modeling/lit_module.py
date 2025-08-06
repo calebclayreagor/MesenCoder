@@ -7,7 +7,7 @@ import torch.nn.functional as F
 from torch.optim import Adam
 from torch.optim import Optimizer
 import matplotlib.pyplot as plt
-from model import MesNet
+from model import MesenCoder
 
 class MesenchymalStates(L.LightningModule):
     def __init__(self, 
@@ -15,7 +15,7 @@ class MesenchymalStates(L.LightningModule):
                  out_pth: str = None):
         super().__init__()
         self.save_hyperparameters(hparams)
-        self.model = MesNet(
+        self.model = MesenCoder(
             input_dim = self.hparams.input_dim,
             n_source = self.hparams.n_source,
             hidden_dim = self.hparams.hidden_dim,
@@ -111,10 +111,10 @@ class MesenchymalStates(L.LightningModule):
         src = torch.zeros_like(src, device = self.device)
         X_hat, z = self.forward(X, src)
         adata.obsm['X_latent'] = z.detach().cpu().numpy()
-        adata.layers['MesNet'] = X_hat.detach().cpu().numpy()
-        adata.varm['MesNet_logvar'] = self.model.logvar_x.detach().cpu().numpy()
-        adata.varm['MesNet_mu'] = self.model.mu_x.detach().cpu().numpy()
-        adata.varm['MesNet_scale'] = self.model.scale_x.detach().cpu().numpy()
+        adata.layers['MesenCoder'] = X_hat.detach().cpu().numpy()
+        adata.varm['MesenCoder_logvar'] = self.model.logvar_x.detach().cpu().numpy()
+        adata.varm['MesenCoder_mu'] = self.model.mu_x.detach().cpu().numpy()
+        adata.varm['MesenCoder_scale'] = self.model.scale_x.detach().cpu().numpy()
         adata.write(self.out_pth)
 
     def configure_optimizers(self) -> Optimizer:
