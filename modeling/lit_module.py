@@ -84,14 +84,15 @@ class MesenchymalStates(L.LightningModule):
                 
                 # plot celltypes
                 fig, ax = plt.subplots(1, 1, figsize = (10, 7))
+                msk_traj = (adata.obs.trajectory == 'True')
                 sc.pl.embedding(
-                    adata[~adata.obs.trajectory],
+                    adata[~msk_traj],
                     'X_latent',
                     size = 100,
                     ax = ax,
                     show = False)
                 sc.pl.embedding(
-                    adata[adata.obs.trajectory],
+                    adata[msk_traj],
                     'X_latent',
                     color = 'celltype',
                     add_outline = True,

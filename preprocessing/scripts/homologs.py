@@ -31,11 +31,11 @@ for species in mart_dict:
     # print(species, mart_dict[species])
 
 #%%
-summary_df = pd.read_csv(os.path.join('..', 'data', 'training.csv'), index_col = 0)
+summary_df = pd.read_csv(os.path.join('..', '..', 'data', 'summary.csv'), index_col = 0)
 species_dict = summary_df.Species.to_dict()
-feat_fn = sorted(glob.glob(os.path.join('..', 'data', 'features', '*.txt')))
+feat_fn = sorted(glob.glob(os.path.join('..', '..', 'data', 'features', '*.txt')))
 feat_dict = {os.path.split(fn)[1].replace('.txt', '') : fn for fn in feat_fn}
-outdir = os.path.join('..', 'data', 'features', 'biomart')
+outdir = os.path.join('..', '..', 'data', 'features', 'biomart')
 for i, key in enumerate(feat_dict):
     features = np.loadtxt(feat_dict[key], dtype = str)
     species = species_dict[key]
