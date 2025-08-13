@@ -88,8 +88,11 @@ dependencies:
       - pandas==2.2.3
       - patsy==1.0.1
       - pillow==11.2.1
+      - progressbar2==4.5.0
+      - pygam==0.10.1
       - pynndescent==0.5.13
       - pyparsing==3.2.3
+      - python-utils==3.9.1
       - pytz==2025.2
       - scanpy==1.11.1
       - scikit-learn==1.5.2
