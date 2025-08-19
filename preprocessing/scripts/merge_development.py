@@ -22,7 +22,7 @@ adata_dict = {os.path.split(fn)[1].replace('.h5ad', '') : fn for fn in adata_fn}
 traj_fn = sorted(glob.glob(os.path.join(pth, 'data', 'trajectories', '*.h5ad')))
 traj_dict = {os.path.split(fn)[1].replace('.h5ad', '') : fn for fn in traj_fn}
 
-# trajectory features
+# dataset features
 feat_fn = os.path.join(pth, 'data', 'features', 'biomart', 'union.csv')
 feat_union = pd.read_csv(feat_fn)
 

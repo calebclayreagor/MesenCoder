@@ -1,7 +1,9 @@
 #%%
 import os
+import numpy as np
 import scanpy as sc
 import anndata as ad
+from scipy.stats import gmean
 
 # load datasets
 pth = os.path.join('..', '..', 'data', 'modeling')
@@ -11,10 +13,22 @@ adata = ad.concat((adata_dev, adata_cancer), join = 'outer', merge = 'same')
 adata.obs = adata.obs.astype(str)
 adata.obs_names_make_unique()
 
-# dataset weights
-weight = adata.shape[0] / adata.obs.groupby('source').size()
+# category (celltype/disease)
+cat = adata.obs.celltype.copy()
+msk_cancer = (cat == 'Malignant')
+cat_cancer = adata[msk_cancer].obs.Disease.copy()
+cat.loc[msk_cancer] = cat_cancer
+adata.obs['category'] = cat.copy()
+
+# weights (category/dataset)
+for col in ('category', 'source'):
+    col_size = adata.obs.groupby(col).size()
+    col_weight = 1 / adata.obs[col].map(col_size)
+    adata.obs[f'weight_{col}'] = col_weight
+weight = adata.obs[['weight_category', 'weight_source']]
+weight = gmean(weight.values, axis = 1)
 weight /= weight.mean()
-adata.obs['weight'] = adata.obs.source.map(weight)
+adata.obs['weight'] = np.clip(weight, a_min = None, a_max = 10.)
 
 # save dataset
 adata.write(os.path.join(pth, 'training.h5ad'))

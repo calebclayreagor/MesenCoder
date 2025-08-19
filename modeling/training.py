@@ -2,6 +2,7 @@ import os, argparse
 import lightning as L
 import anndata as ad
 from torch.utils.data import DataLoader
+from torch.utils.data import WeightedRandomSampler
 from lightning.pytorch.loggers import WandbLogger
 from lightning.pytorch.callbacks import ModelCheckpoint
 from lightning.pytorch.callbacks import EarlyStopping
@@ -12,35 +13,36 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     # CLI parameters
-    parser.add_argument('--n_layers', type = int, default = 2)
-    parser.add_argument('--hidden_dim', type = int, default = 256)
-    parser.add_argument('--latent_dim', type = int, default = 2)
+    parser.add_argument('--n_layers_enc', type = int, default = 2)
+    parser.add_argument('--n_layers_dec', type = int, default = 1)
+    parser.add_argument('--hidden_dim_enc', type = int, default = 256)
+    parser.add_argument('--hidden_dim_dec', type = int, default = 256)
+    parser.add_argument('--batch_size', type = int, default = 1024)
     parser.add_argument('--learning_rate', type = float, default = 1e-3)
-    parser.add_argument('--batch_size', type = int, default = 128)
-    parser.add_argument('--patience', type = int, default = 10)
-    parser.add_argument('--min_delta', type = float, default = 1e-4)
     parser.add_argument('--max_epochs', type = int, default = 100)
-    parser.add_argument('--val_log_freq', type = int, default = 10)
-    parser.add_argument('--sample_frac', type = float, default = 1.)
-    parser.add_argument('--save_ckpt', type = bool, default = False)
-    parser.add_argument('--num_workers', type = int, default = 32)
+    parser.add_argument('--patience', type = int, default = 10)
+    parser.add_argument('--val_log_freq', type = int, default = 5)
+    parser.add_argument('--save_ckpt', type = bool, default = True)
     parser.add_argument('--wandb_project', type = str, default = 'MesenCoder')
+    parser.add_argument('--sample_frac', type = float, default = 1.)
+    parser.add_argument('--num_workers', type = int, default = 32)
     args = parser.parse_args()
 
     L.seed_everything(1)
 
     # training/validation datasets
-    adata = ad.read_h5ad(os.path.join('..', 'data', 'modeling', 'training.h5ad'))
+    datadir = os.path.join('..', 'data', 'modeling')
+    adata = ad.read_h5ad(os.path.join(datadir, 'training.h5ad'))
     train_ix = (adata.obs.training == 'True')
     adata_train = adata[train_ix]
     adata_val = adata[~train_ix]
     if args.sample_frac < 1:
         train_sample_ix = (adata_train.obs
-                           .groupby('celltype')
+                           .groupby(['category'])
                            .sample(frac = args.sample_frac)
                            .index)
         val_sample_ix = (adata_val.obs
-                         .groupby('celltype')
+                         .groupby(['category'])
                          .sample(frac = args.sample_frac)
                          .index)
         adata_train = adata_train[train_sample_ix]
@@ -48,11 +50,17 @@ if __name__ == '__main__':
     train_ds = MesenchymeDataset(adata_train)
     val_ds = MesenchymeDataset(adata_val) 
 
+    # training sampler
+    sampler = WeightedRandomSampler(
+        weights = adata_train.obs.weight.values,
+        num_samples = len(train_ds),
+        replacement = True)
+
     # dataloaders
     train_dl = DataLoader(
         train_ds,
         batch_size = args.batch_size,
-        shuffle = True,
+        sampler = sampler,
         num_workers = args.num_workers,
         pin_memory = True)
     val_dl = DataLoader(
@@ -62,7 +70,7 @@ if __name__ == '__main__':
         num_workers = 1,
         pin_memory = True)
 
-    # conditional autoencoder
+    # custom autoencoder
     args.input_dim = adata.shape[1]
     args.n_source = adata.obs.source.cat.categories.nunique()
     model = MesenchymalStates(args)
@@ -78,7 +86,6 @@ if __name__ == '__main__':
         EarlyStopping(
             monitor = 'val_loss',
             patience = args.patience,
-            min_delta = args.min_delta,
             mode = 'min')]
     if args.save_ckpt:
         callbacks.append(

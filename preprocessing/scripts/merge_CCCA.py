@@ -1,8 +1,7 @@
 #%%
 import os, sys
+sys.path.append('..')
 import warnings
-pth = os.path.join('..', '..')
-sys.path.append(pth)
 import numpy as np
 import pandas as pd
 import scanpy as sc
@@ -11,6 +10,7 @@ from scipy.sparse import csr_matrix
 from utils.load import load_CCCA_adata
 np.random.seed(1)
 
+pth = os.path.join('..', '..')
 pth_out = os.path.join(pth, 'data', 'modeling')
 
 # datasets summary (CCCA)
@@ -19,7 +19,7 @@ title = summary_df.Title.str.replace(' et al. ', '')
 cat = summary_df.Category.str.replace(' ', '-').replace('/', '-')
 summary_df['Name'] = 'Data_' + title + '_' + cat
 
-# datasets features
+# dataset features
 feat_fn = os.path.join(pth, 'data', 'features', 'biomart', 'union.csv')
 feat_union = pd.read_csv(feat_fn)
 
@@ -54,12 +54,12 @@ for ix in summary_df.index:
     if cat_ix != 'Other/Models':
         name_ix = summary_df.loc[ix, 'Name']
         dirname = os.path.join(pth, 'data', 'unzip', 'CCCA', name_ix)
-        for pth, subdir, _ in os.walk(dirname):
+        for dirpth, subdir, _ in os.walk(dirname):
             key = name_ix
-            if pth != dirname:
-                key += '_' + os.path.split(pth)[1]
+            if dirpth != dirname:
+                key += '_' + os.path.split(dirpth)[1]
             if len(subdir) == 0:
-                adata = load_CCCA_adata(pth)
+                adata = load_CCCA_adata(dirpth)
                 adata = preprocess(adata)
                 with warnings.catch_warnings():
                     warnings.simplefilter('ignore', FutureWarning)

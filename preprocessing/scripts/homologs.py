@@ -5,8 +5,19 @@ import pandas as pd
 from pybiomart import Server
 server = Server(host = 'http://www.ensembl.org')
 mart = server.marts['ENSEMBL_MART_ENSEMBL']
+pth = os.path.join('..', '..')
 
-#%%
+outdir = os.path.join(pth, 'data', 'features', 'biomart')
+
+# datasets summary
+summary_df = pd.read_csv(os.path.join(pth, 'data', 'summary.csv'), index_col = 0)
+species_dict = summary_df.Species.to_dict()
+species_dict['HALLMARK_EPITHELIAL_MESENCHYMAL_TRANSITION.v2025.1.Hs'] = 'hsapiens'
+
+# dataset features
+feat_fn = sorted(glob.glob(os.path.join(pth, 'data', 'features', '*.txt')))
+feat_dict = {os.path.split(fn)[1].replace('.txt', '') : fn for fn in feat_fn}
+
 mart_dict = {
     'mmusculus' : 'mmusculus_gene_ensembl',
     'hsapiens' : 'hsapiens_gene_ensembl'
@@ -30,12 +41,6 @@ for species in mart_dict:
     mart_dict[species].columns = attr_dict[species].values()
     # print(species, mart_dict[species])
 
-#%%
-summary_df = pd.read_csv(os.path.join('..', '..', 'data', 'summary.csv'), index_col = 0)
-species_dict = summary_df.Species.to_dict()
-feat_fn = sorted(glob.glob(os.path.join('..', '..', 'data', 'features', '*.txt')))
-feat_dict = {os.path.split(fn)[1].replace('.txt', '') : fn for fn in feat_fn}
-outdir = os.path.join('..', '..', 'data', 'features', 'biomart')
 for i, key in enumerate(feat_dict):
     features = np.loadtxt(feat_dict[key], dtype = str)
     species = species_dict[key]
@@ -45,9 +50,11 @@ for i, key in enumerate(feat_dict):
     feat_dict[key] = df
     # print(key, df)
 
-#%%
-df = pd.concat(feat_dict.values()).sort_values('mmusculus')
-df = df.apply(lambda x: x.drop_duplicates().reset_index(drop = True)).dropna()
-df.to_csv(os.path.join(outdir, 'union.csv'), index = False)
+df = pd.concat(feat_dict.values(), ignore_index = True).dropna()
+df = df.sort_values(['mmusculus', 'hsapiens']).reset_index(drop = True)
+df = df.drop_duplicates(subset = ['mmusculus'], keep = 'first')
+df = df.drop_duplicates(subset = ['hsapiens'], keep = 'first')
+df = df.sort_values('mmusculus').reset_index(drop = True)
+df.to_csv(os.path.join(outdir, 'union.csv'), index=False)
 
 #%%
