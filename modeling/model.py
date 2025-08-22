@@ -1,91 +1,79 @@
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
 class MesenCoder(nn.Module):
     def __init__(self,
-                 input_dim: int,
+                 n_feature: int,
                  n_source: int,
-                 n_layers_enc: int,
-                 n_layers_dec: int,
-                 hidden_dim_enc: int,
-                 hidden_dim_dec: int,
+                 hidden_dim: int,
+                 latent_dim_src: int,
                  latent_dim: int = 1,
+                 activation: type[nn.Module] = nn.ReLU
                  ) -> None:
         super().__init__()
+        self.activation = activation
 
-        # feature encoder
-        self.encoder = self.make_layers(
-            input_dim = input_dim,
-            n_layers = n_layers_enc,
-            hidden_dim = hidden_dim_enc,
-            output_dim = latent_dim,
-            batchnorm_out = True)
-
-        # source baseline
-        self.baseline_src = nn.Embedding(
-            num_embeddings = n_source,
-            embedding_dim = input_dim)
+        # vanilla encoder (+ BN, tied input)
+        self.encoder = nn.Sequential(
+            nn.Linear(n_feature, hidden_dim), activation(),
+            nn.Linear(hidden_dim, latent_dim),
+            nn.BatchNorm1d(latent_dim, affine = False))
         
-        # conditional decoder (residual)
-        input_dim_dec = (latent_dim + input_dim)
-        self.decoder = self.make_layers(
-            input_dim = input_dim_dec,
-            n_layers = n_layers_dec,
-            hidden_dim = hidden_dim_dec,
-            output_dim = input_dim)
+        # conditional decoder (+ tied output)
+        in_dim_dec = latent_dim + latent_dim_src
+        self.decoder = nn.Sequential(
+            nn.Linear(in_dim_dec, hidden_dim), activation(),
+            TiedLinear(self.encoder[0]))
+
+        # source embedding
+        self.embed_src = nn.Embedding(
+            num_embeddings = n_source,
+            embedding_dim = latent_dim_src)
         
         # init weights
         self._initialize_weights()
-        nn.init.xavier_uniform_(
-            self.encoder[-2].weight,
-            gain = nn.init.calculate_gain('tanh'))
         nn.init.normal_(
-            self.baseline_src.weight,
+            self.embed_src.weight,
             mean = 0., std = .05)
 
     def forward(self,
                 x: torch.Tensor,
-                src: torch.Tensor | None
-                ) -> torch.Tensor:
+                src: torch.Tensor
+                ) -> tuple[torch.Tensor,
+                           torch.Tensor]:
 
-        # feature encoder
+        # encoder
         u = self.encoder(x)
-        z = torch.tanh(u)
+        z = torch.log1p(F.softplus(u) + 1e-6)
 
-        if src is not None:
-            # source baseline
-            src = self.baseline_src(src)
+        # source embedding
+        v = self.embed_src(src)
 
-            # conditional decoder (residual)
-            z_cond = torch.cat((z, src), dim = -1)
-            x_hat = src + self.decoder(z_cond)
-            return x_hat
-        else:
-            return z
+        # decoder
+        h = torch.cat((z, v), dim = -1)
+        x_hat = self.decoder(h)
+        return x_hat, z
 
-    def make_layers(self,
-                    input_dim: int,
-                    n_layers: int,
-                    hidden_dim: int,
-                    output_dim: int,
-                    batchnorm_out: bool = False,
-                    activation: type[nn.Module] = nn.ReLU,
-                    ) -> nn.Sequential:
-        layers = list()
-        for _ in range(n_layers):
-            layers.extend([nn.Linear(input_dim, hidden_dim), activation()])
-            input_dim = hidden_dim
-        layers.append(nn.Linear(input_dim, output_dim, bias = not batchnorm_out))
-        if batchnorm_out:
-            layers.append(nn.BatchNorm1d(output_dim, affine = False))
-        return nn.Sequential(*layers)
-    
-    def _initialize_weights(self,
-                            nonlinearity: str = 'relu'
-                            ) -> None:
+    def _initialize_weights(self) -> None:
+        if self.activation is nn.ReLU:
+            nonlinearity = 'relu'
         for m in self.modules():
             if isinstance(m, nn.Linear):
                 nn.init.kaiming_uniform_(
-                    m.weight, nonlinearity = nonlinearity)
-                if m.bias is not None:
-                    nn.init.zeros_(m.bias)
+                    m.weight,
+                    nonlinearity = nonlinearity)
+                nn.init.zeros_(m.bias)
+
+class TiedLinear(nn.Module):
+    def __init__(self,
+                 tied_to: nn.Linear
+                 ) -> None:
+        super().__init__()
+        self.tied_to = tied_to
+        self.bias = nn.Parameter(torch.zeros(tied_to.in_features))
+
+    def forward(self,
+                x: torch.Tensor
+                ) -> torch.Tensor:
+        return F.linear(x, self.tied_to.weight.t(), self.bias)

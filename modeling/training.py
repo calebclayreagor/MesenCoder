@@ -13,18 +13,15 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     # CLI parameters
-    parser.add_argument('--n_layers_enc', type = int, default = 2)
-    parser.add_argument('--n_layers_dec', type = int, default = 1)
-    parser.add_argument('--hidden_dim_enc', type = int, default = 256)
-    parser.add_argument('--hidden_dim_dec', type = int, default = 256)
+    parser.add_argument('--hidden_dim', type = int, default = 32)
+    parser.add_argument('--latent_dim_src', type = int, default = 4)
     parser.add_argument('--batch_size', type = int, default = 1024)
     parser.add_argument('--learning_rate', type = float, default = 1e-3)
-    parser.add_argument('--max_epochs', type = int, default = 100)
+    parser.add_argument('--max_epochs', type = int, default = 200)
     parser.add_argument('--patience', type = int, default = 10)
     parser.add_argument('--val_log_freq', type = int, default = 5)
-    parser.add_argument('--save_ckpt', type = bool, default = True)
+    parser.add_argument('--save_ckpt', action = 'store_true')
     parser.add_argument('--wandb_project', type = str, default = 'MesenCoder')
-    parser.add_argument('--sample_frac', type = float, default = 1.)
     parser.add_argument('--num_workers', type = int, default = 32)
     args = parser.parse_args()
 
@@ -36,17 +33,6 @@ if __name__ == '__main__':
     train_ix = (adata.obs.training == 'True')
     adata_train = adata[train_ix]
     adata_val = adata[~train_ix]
-    if args.sample_frac < 1:
-        train_sample_ix = (adata_train.obs
-                           .groupby(['category'])
-                           .sample(frac = args.sample_frac)
-                           .index)
-        val_sample_ix = (adata_val.obs
-                         .groupby(['category'])
-                         .sample(frac = args.sample_frac)
-                         .index)
-        adata_train = adata_train[train_sample_ix]
-        adata_val = adata_val[val_sample_ix]
     train_ds = MesenchymeDataset(adata_train)
     val_ds = MesenchymeDataset(adata_val) 
 
@@ -65,13 +51,13 @@ if __name__ == '__main__':
         pin_memory = True)
     val_dl = DataLoader(
         val_ds,
-        batch_size = len(val_ds),
+        batch_size = args.batch_size,
         shuffle = False,
-        num_workers = 1,
+        num_workers = args.num_workers,
         pin_memory = True)
 
     # custom autoencoder
-    args.input_dim = adata.shape[1]
+    args.n_feature = adata.shape[1]
     args.n_source = adata.obs.source.cat.categories.nunique()
     model = MesenchymalStates(args)
 

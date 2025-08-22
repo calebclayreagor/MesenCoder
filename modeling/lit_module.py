@@ -1,4 +1,5 @@
 import argparse
+import numpy as np
 import torch, wandb
 import lightning as L
 import seaborn as sns
@@ -15,33 +16,36 @@ class MesenchymalStates(L.LightningModule):
         super().__init__()
         self.save_hyperparameters(hparams)
         self.model = MesenCoder(
-            input_dim = self.hparams.input_dim,
+            n_feature = self.hparams.n_feature,
             n_source = self.hparams.n_source,
-            n_layers_enc = self.hparams.n_layers_enc,
-            n_layers_dec = self.hparams.n_layers_dec,
-            hidden_dim_enc = self.hparams.hidden_dim_enc,
-            hidden_dim_dec = self.hparams.hidden_dim_dec)
+            hidden_dim = self.hparams.hidden_dim,
+            latent_dim_src = self.hparams.latent_dim_src)
         self.out_pth = out_pth
 
     def forward(self,
                 x: torch.Tensor,
-                src: torch.Tensor | None = None
-                ) -> torch.Tensor:
-        return self.model(x, src) 
+                src: torch.Tensor
+                ) -> tuple[torch.Tensor,
+                           torch.Tensor]:
+        return self.model(x, src)
 
     def custom_step(self, 
                     batch: tuple[torch.Tensor,
+                                 torch.Tensor,
                                  torch.Tensor]
-                    ) -> torch.Tensor:
-        X, src = batch
-        X_hat = self.forward(X, src)
-        return F.mse_loss(X_hat, X)
+                    ) -> tuple[torch.Tensor,
+                               torch.Tensor]:
+        X, src, _ = batch
+        X_hat, z = self.forward(X, src)
+        loss = F.mse_loss(X_hat, X)
+        return loss, z
 
     def training_step(self,
                       batch: tuple[torch.Tensor,
+                                   torch.Tensor,
                                    torch.Tensor],
                       _) -> torch.Tensor:
-        loss = self.custom_step(batch)
+        loss, _ = self.custom_step(batch)
         batch_size = batch[0].size(0)
         self.log(
             'train_loss', loss,
@@ -54,9 +58,11 @@ class MesenchymalStates(L.LightningModule):
     
     def validation_step(self,
                         batch: tuple[torch.Tensor,
+                                     torch.Tensor,
                                      torch.Tensor],
                         _) -> None:
-        loss = self.custom_step(batch)
+        _, _, ix = batch
+        loss, z = self.custom_step(batch)
         batch_size = batch[0].size(0)
         self.log(
             'val_loss', loss,
@@ -65,49 +71,79 @@ class MesenchymalStates(L.LightningModule):
             batch_size = batch_size,
             sync_dist = True,
             add_dataloader_idx = False)
+        ix = ix.detach().cpu().numpy().squeeze()
+        z = z.detach().cpu().numpy().squeeze()
+        self.val_latent_z[ix] = z
         
-    def predict_step(self, _, __) -> None:
-        return None
+    # def predict_step(self, _, __) -> None:
+    #     return None
+
+    def on_validation_epoch_start(self) -> None:
+        self.val_latent_z = np.zeros(
+            len(self.trainer.val_dataloaders.dataset),
+            dtype = np.float32)
 
     def on_validation_epoch_end(self) -> None:
-        if self.current_epoch % self.hparams.val_log_freq == 0:
-            if self.current_epoch > 0:
+        if self.current_epoch > 0 and (self.current_epoch + 1) % self.hparams.val_log_freq == 0:
+            adata = self.trainer.val_dataloaders.dataset.adata
+            adata.obs['latent_z'] = self.val_latent_z.copy()
 
-                # val latent embedding
-                adata = self.trainer.val_dataloaders.dataset.adata
-                X, _ = next(iter(self.trainer.val_dataloaders))
-                X = X.to(self.device)
-                z = self.forward(X)
-                adata.obs['latent_z'] = z.detach().cpu().numpy()
+            # plot celltype, disease
+            def whisker_bounds(s):
+                q1, q3 = s.quantile([.25, .75])
+                iqr = q3 - q1
+                lo = s[s >= q1 - 1.5 * iqr].min()
+                hi = s[s <= q3 + 1.5 * iqr].max()
+                return lo, hi
 
-                # plot celltype, disease
-                msk_cancer = adata.obs.celltype.isin(['Malignant'])
-                for yvar, msk, figsize, color in (
-                    ('celltype', None, (8, 10), 'cornflowerblue'),
-                    ('Disease', msk_cancer, (9, 10.25), 'lightcoral')):
-                    if msk is not None:
-                        data = adata[msk].obs.copy()
-                    else:
-                        data = adata.obs.copy()
-                    order = (data.groupby(yvar)
-                             .latent_z.median()
-                             .sort_values().index)
-                    fig, ax = plt.subplots(1, 1, figsize = figsize)
-                    sns.boxplot(
-                        data = data,
-                        x = 'latent_z',
-                        y = yvar,
-                        order = order,
-                        color = color,
-                        width = .66,
-                        fliersize = 0,
-                        ax = ax)
-                    ax.set_xlim([-1.025, 1.025])
-                    fig.tight_layout()
-                    self.logger.experiment.log({
-                        f'val_latent_{yvar}' : wandb.Image(fig),
-                        'epoch'              : self.current_epoch})
-                    plt.close(fig)
+            outliers_cancer = [
+                'IDH-Mutant Astrocytoma',
+                'IDH-Mutant Oligodendroglioma',
+                'Pediatric H3-K27M Mutant Glioma',
+                'Medulloblastoma',
+                'Pediatric Ependymoma']
+
+            msk_cancer = adata.obs.celltype.isin(['Malignant']) & \
+                            ~adata.obs.Disease.isin(outliers_cancer)
+            
+            for yvar, msk, color in (
+                ('celltype', None, 'cornflowerblue'),
+                ('Disease', msk_cancer, 'lightcoral')):
+
+                if msk is not None:
+                    data = adata[msk].obs.copy()
+                else:
+                    data = adata.obs.copy()
+
+                order = (data.groupby(yvar)
+                            .latent_z.median()
+                            .sort_values().index)
+                
+                lows_highs = (data.groupby(yvar)
+                                .latent_z.apply(
+                                whisker_bounds))
+                
+                fig, ax = plt.subplots(1, 1, figsize = (8, 10))
+                lo = lows_highs.apply(lambda t: t[0]).min()
+                hi = lows_highs.apply(lambda t: t[1]).max()
+                margin = (hi - lo) * 0.02
+                sns.boxplot(
+                    data = data,
+                    x = 'latent_z',
+                    y = yvar,
+                    order = order,
+                    color = color,
+                    width = .66,
+                    fliersize = 0,
+                    ax = ax)
+                ax.set_xlim((lo - margin), (hi + margin))
+                ax.grid(True)
+                fig.tight_layout()
+                
+                self.logger.experiment.log({
+                    f'val_latent_{yvar}' : wandb.Image(fig),
+                    'epoch'              : self.current_epoch})
+                plt.close(fig)
 
     # def on_predict_epoch_end(self) -> None:
     #     adata = self.trainer.predict_dataloaders.dataset.adata
