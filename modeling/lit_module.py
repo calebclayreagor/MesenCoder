@@ -75,12 +75,25 @@ class MesenchymalStates(L.LightningModule):
         z = z.detach().cpu().numpy().squeeze()
         self.val_latent_z[ix] = z
         
-    # def predict_step(self, _, __) -> None:
-    #     return None
+    def predict_step(self,
+                     batch: tuple[torch.Tensor,
+                                  torch.Tensor,
+                                  torch.Tensor],
+                        _) -> None:
+        _, _, ix = batch
+        _, z = self.custom_step(batch)
+        ix = ix.detach().cpu().numpy().squeeze()
+        z = z.detach().cpu().numpy().squeeze()
+        self.pred_latent_z[ix] = z
 
     def on_validation_epoch_start(self) -> None:
         self.val_latent_z = np.zeros(
             len(self.trainer.val_dataloaders.dataset),
+            dtype = np.float32)
+        
+    def on_predict_epoch_start(self) -> None:
+        self.pred_latent_z = np.zeros(
+            len(self.trainer.predict_dataloaders.dataset),
             dtype = np.float32)
 
     def on_validation_epoch_end(self) -> None:
@@ -145,18 +158,10 @@ class MesenchymalStates(L.LightningModule):
                     'epoch'              : self.current_epoch})
                 plt.close(fig)
 
-    # def on_predict_epoch_end(self) -> None:
-    #     adata = self.trainer.predict_dataloaders.dataset.adata
-    #     X, src, _ = next(iter(self.trainer.predict_dataloaders))
-    #     X = X.to(self.device)
-    #     src = torch.zeros_like(src, device = self.device)
-    #     X_hat, z = self.forward(X, src)
-    #     adata.obsm['X_latent'] = z.detach().cpu().numpy()
-    #     adata.layers['MesenCoder'] = X_hat.detach().cpu().numpy()
-    #     adata.varm['MesenCoder_logvar'] = self.model.logvar_x.detach().cpu().numpy()
-    #     adata.varm['MesenCoder_mu'] = self.model.mu_x.detach().cpu().numpy()
-    #     adata.varm['MesenCoder_scale'] = self.model.scale_x.detach().cpu().numpy()
-    #     adata.write(self.out_pth)
+    def on_predict_epoch_end(self) -> None:
+        adata = self.trainer.predict_dataloaders.dataset.adata
+        adata.obs['latent_z'] = self.pred_latent_z.copy()
+        adata.write(self.out_pth)
 
     def configure_optimizers(self) -> Optimizer:
         return Adam(self.parameters(), lr = self.hparams.learning_rate)

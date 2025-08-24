@@ -80,14 +80,8 @@ msk_cancer = (adata_ccca.obs.celltype == 'Malignant')
 adata_cancer = adata_ccca[msk_cancer].copy()
 adata_other = adata_ccca[~msk_cancer].copy()
 
-# split other celltypes in half
-msk_half = (np.arange(adata_other.shape[0]) < (adata_other.shape[0] // 2))
-adata_other1 = adata_other[msk_half].copy()
-adata_other2 = adata_other[~msk_half].copy()
-
 # save datasets
 adata_cancer.write(os.path.join(pth_out, 'CCCA_malignant.h5ad'))
-adata_other1.write(os.path.join(pth_out, 'CCCA_other1.h5ad'))
-adata_other2.write(os.path.join(pth_out, 'CCCA_other2.h5ad'))
+adata_other.write(os.path.join(pth_out, 'CCCA_other.h5ad'))
 
 #%%
