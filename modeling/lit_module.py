@@ -109,15 +109,15 @@ class MesenchymalStates(L.LightningModule):
                 hi = s[s <= q3 + 1.5 * iqr].max()
                 return lo, hi
 
-            outliers_cancer = [
-                'IDH-Mutant Astrocytoma',
-                'IDH-Mutant Oligodendroglioma',
-                'Pediatric H3-K27M Mutant Glioma',
-                'Medulloblastoma',
-                'Pediatric Ependymoma']
+            # outliers_cancer = [
+            #     'IDH-Mutant Astrocytoma',
+            #     'IDH-Mutant Oligodendroglioma',
+            #     'Pediatric H3-K27M Mutant Glioma',
+            #     'Medulloblastoma',
+            #     'Pediatric Ependymoma']
 
-            msk_cancer = adata.obs.celltype.isin(['Malignant']) & \
-                            ~adata.obs.Disease.isin(outliers_cancer)
+            msk_cancer = adata.obs.celltype.isin(['Malignant']) #& \
+                            # ~adata.obs.Disease.isin(outliers_cancer)
             
             for yvar, msk, color in (
                 ('celltype', None, 'cornflowerblue'),
@@ -139,7 +139,7 @@ class MesenchymalStates(L.LightningModule):
                 fig, ax = plt.subplots(1, 1, figsize = (8, 10))
                 lo = lows_highs.apply(lambda t: t[0]).min()
                 hi = lows_highs.apply(lambda t: t[1]).max()
-                margin = (hi - lo) * 0.02
+                margin = (hi - lo) * .02
                 sns.boxplot(
                     data = data,
                     x = 'latent_z',
