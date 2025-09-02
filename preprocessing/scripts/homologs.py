@@ -12,7 +12,6 @@ outdir = os.path.join(pth, 'data', 'features', 'biomart')
 # datasets summary
 summary_df = pd.read_csv(os.path.join(pth, 'data', 'summary.csv'), index_col = 0)
 species_dict = summary_df.Species.to_dict()
-species_dict['HALLMARK_EPITHELIAL_MESENCHYMAL_TRANSITION.v2025.1.Hs'] = 'hsapiens'
 
 # dataset features
 feat_fn = sorted(glob.glob(os.path.join(pth, 'data', 'features', '*.txt')))

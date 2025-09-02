@@ -6,3 +6,4 @@ GSE229103,Neuromesodermal Progenitor,mmusculus,True,E8.5,Developmental dataset d
 HCAEmbryonicHindlimb,Embryonic Hindlimb,hsapiens,True,PCW5-9,Embryonic hindlimb atlas focusing on spatial and temporal gene expression programs
 rRNAModifications,Cranial Neural Crest,mmusculus,True,E8.5-10.5,Neural crest cell dataset showing the bifurcation between cranial mesenchyme and neural crest
 CCCA,Curated Cancer Cell Atlas,hsapiens,False,Primary & Metastatic,Cancer atlas containing 70+ curated single-cell datasets spanning >100 cancer subtypes
+EMTHallmark,EMT Hallmark,hsapiens,False,NA,Genes defining epithelial-mesenchymal transition as in wound healing & fibrosis & metastasis (v2025.1.Hs)
