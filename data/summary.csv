@@ -8,3 +8,4 @@ rRNAModifications,Cranial Neural Crest,mmusculus,True,E8.5-10.5,Neural crest cel
 CCCA,Curated Cancer Cell Atlas,hsapiens,False,Primary & Metastatic,Cancer atlas containing 70+ curated single-cell datasets spanning >100 cancer subtypes
 EMTHallmark,EMT Hallmark,hsapiens,False,NA,Genes defining epithelial-mesenchymal transition as in wound healing & fibrosis & metastasis (v2025.1.Hs)
 TCGA-SKCM,TCGA Melanoma,hsapiens,False,Primary & Metastatic,The Cancer Genome Atlas dataset of cutaneous melanomas with bulk sequencing for >400 tumors
+TCGA-LGG,TCGA Low Grade Glioma,hsapiens,False,Primary,The Cancer Genome Atlas dataset of low grade gliomas with bulk sequencing for >500 primary tumors
