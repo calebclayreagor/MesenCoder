@@ -5,25 +5,25 @@ import pandas as pd
 import scanpy as sc
 import anndata as ad
 np.random.seed(1)
-pth = os.path.join('..', '..')
+pth = os.path.join('..', '..', 'data')
 
 # training/validation split
 train_frac = .8
 
 # datasets summary
-summary_df = pd.read_csv(os.path.join(pth, 'data', 'summary.csv'), index_col = 0)
+summary_df = pd.read_csv(os.path.join(pth, 'summary.csv'), index_col = 0)
 species_dict = summary_df.Species.to_dict()
 
 # processed datasets (developmental)
-adata_fn = sorted(glob.glob(os.path.join(pth, 'data', 'processed', '*.h5ad')))
+adata_fn = sorted(glob.glob(os.path.join(pth, 'processed', '*.h5ad')))
 adata_dict = {os.path.split(fn)[1].replace('.h5ad', '') : fn for fn in adata_fn}
 
 # pseudotime trajectories
-traj_fn = sorted(glob.glob(os.path.join(pth, 'data', 'trajectories', '*.h5ad')))
+traj_fn = sorted(glob.glob(os.path.join(pth, 'trajectories', '*.h5ad')))
 traj_dict = {os.path.split(fn)[1].replace('.h5ad', '') : fn for fn in traj_fn}
 
 # dataset features
-feat_fn = os.path.join(pth, 'data', 'features', 'biomart', 'union.csv')
+feat_fn = os.path.join(pth, 'features', 'biomart', 'union.csv')
 feat_union = pd.read_csv(feat_fn)
 
 # prepare training/validation datasets
@@ -55,6 +55,6 @@ adata = ad.concat(adata_dict, join = 'outer', merge = 'same', label = 'source')
 adata.obs_names_make_unique()
 
 # save dataset
-adata.write(os.path.join(pth, 'data', 'modeling', 'development.h5ad'))
+adata.write(os.path.join(pth, 'modeling', 'development.h5ad'))
 
 #%%
