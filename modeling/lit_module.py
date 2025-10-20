@@ -100,61 +100,33 @@ class MesenchymalStates(L.LightningModule):
         if self.current_epoch > 0 and (self.current_epoch + 1) % self.hparams.val_log_freq == 0:
             adata = self.trainer.val_dataloaders.dataset.adata
             adata.obs['latent_z'] = self.val_latent_z.copy()
-
-            # plot celltype, disease
-            def whisker_bounds(s):
-                q1, q3 = s.quantile([.25, .75])
-                iqr = q3 - q1
-                lo = s[s >= q1 - 1.5 * iqr].min()
-                hi = s[s <= q3 + 1.5 * iqr].max()
-                return lo, hi
-
-            # outliers_cancer = [
-            #     'IDH-Mutant Astrocytoma',
-            #     'IDH-Mutant Oligodendroglioma',
-            #     'Pediatric H3-K27M Mutant Glioma',
-            #     'Medulloblastoma',
-            #     'Pediatric Ependymoma']
-
-            msk_cancer = adata.obs.celltype.isin(['Malignant']) #& \
-                            # ~adata.obs.Disease.isin(outliers_cancer)
+            msk_cancer = adata.obs.celltype.isin(['Malignant'])
             
-            for yvar, msk, color in (
-                ('celltype', None, 'cornflowerblue'),
-                ('Disease', msk_cancer, 'lightcoral')):
+            for name, yvar, hue, msk in (
+                ('dev', 'celltype', 'source', ~msk_cancer),
+                ('cancer', 'Disease', 'Category', msk_cancer)):
 
-                if msk is not None:
-                    data = adata[msk].obs.copy()
-                else:
-                    data = adata.obs.copy()
-
+                data = adata[msk].obs.copy()
                 order = (data.groupby(yvar)
-                            .latent_z.median()
-                            .sort_values().index)
-                
-                lows_highs = (data.groupby(yvar)
-                                .latent_z.apply(
-                                whisker_bounds))
+                         .agg({'latent_z' : 'mean', hue : 'first'})
+                         .sort_values([hue, 'latent_z']).index)
                 
                 fig, ax = plt.subplots(1, 1, figsize = (8, 10))
-                lo = lows_highs.apply(lambda t: t[0]).min()
-                hi = lows_highs.apply(lambda t: t[1]).max()
-                margin = (hi - lo) * .02
-                sns.boxplot(
+                sns.violinplot(
                     data = data,
                     x = 'latent_z',
                     y = yvar,
+                    hue = hue,
+                    dodge = False,
                     order = order,
-                    color = color,
-                    width = .66,
-                    fliersize = 0,
+                    density_norm = 'width',
+                    inner = 'quart',
                     ax = ax)
-                ax.set_xlim((lo - margin), (hi + margin))
-                ax.grid(True)
+                ax.grid('x')
                 fig.tight_layout()
                 
                 self.logger.experiment.log({
-                    f'val_latent_{yvar}' : wandb.Image(fig),
+                    f'val_latent_{name}' : wandb.Image(fig),
                     'epoch'              : self.current_epoch})
                 plt.close(fig)
 

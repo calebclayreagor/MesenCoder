@@ -19,19 +19,15 @@ feat_dict = {os.path.split(fn)[1].replace('.txt', '') : fn for fn in feat_fn}
 
 mart_dict = {
     'mmusculus' : 'mmusculus_gene_ensembl',
-    'hsapiens' : 'hsapiens_gene_ensembl'
-    }
+    'hsapiens' : 'hsapiens_gene_ensembl'}
 
 attr_dict = {
     'mmusculus' : {
-        'external_gene_name'                    : 'mmusculus',
-        'hsapiens_homolog_associated_gene_name' : 'hsapiens'
-        },
+        'external_gene_name'                     : 'mmusculus',
+        'hsapiens_homolog_associated_gene_name'  : 'hsapiens'},
     'hsapiens' : {
         'external_gene_name'                     : 'hsapiens',
-        'mmusculus_homolog_associated_gene_name' : 'mmusculus'
-        }
-    }
+        'mmusculus_homolog_associated_gene_name' : 'mmusculus'}}
 
 for species in mart_dict:
     mart_dict[species] = mart.datasets[mart_dict[species]]

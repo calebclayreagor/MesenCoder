@@ -45,14 +45,14 @@ class MesenCoder(nn.Module):
                            torch.Tensor]:
 
         # encoder
-        u = self.encoder(x)
-        z = torch.log1p(F.softplus(u) + eps)
+        z = self.encoder(x)
+        u = torch.log1p(F.softplus(z) + eps)
 
         # source embedding
         v = self.embed_src(src)
 
         # decoder
-        h = torch.cat((z, v), dim = -1)
+        h = torch.cat((u, v), dim = -1)
         x_hat = self.decoder(h)
         return x_hat, z
 

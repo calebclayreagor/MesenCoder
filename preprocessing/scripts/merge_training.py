@@ -13,14 +13,14 @@ adata = ad.concat((adata_dev, adata_cancer), join = 'outer', merge = 'same')
 adata.obs = adata.obs.astype(str)
 adata.obs_names_make_unique()
 
-# category (celltype/disease)
+# category/celltype
 cat = adata.obs.celltype.copy()
 msk_cancer = (cat == 'Malignant')
-cat_cancer = adata[msk_cancer].obs.Disease.copy()
+cat_cancer = adata[msk_cancer].obs.Category.copy()
 cat.loc[msk_cancer] = cat_cancer
 adata.obs['category'] = cat.copy()
 
-# weights (category/dataset)
+# weights (category/source)
 for col in ('category', 'source'):
     col_size = adata.obs.groupby(col).size()
     col_weight = 1 / adata.obs[col].map(col_size)
@@ -28,7 +28,7 @@ for col in ('category', 'source'):
 weight = adata.obs[['weight_category', 'weight_source']]
 weight = gmean(weight.values, axis = 1)
 weight /= weight.mean()
-adata.obs['weight'] = np.clip(weight, a_min = None, a_max = 10.)
+adata.obs['weight'] = np.log1p(weight)
 
 # save dataset
 adata.write(os.path.join(pth, 'training.h5ad'))
