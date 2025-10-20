@@ -39,22 +39,27 @@ class MesenCoder(nn.Module):
 
     def forward(self,
                 x: torch.Tensor,
-                src: torch.Tensor,
+                src: torch.Tensor | None,
                 eps: float = 1e-6
-                ) -> tuple[torch.Tensor,
-                           torch.Tensor]:
+                ) -> torch.Tensor | \
+                    tuple[torch.Tensor,
+                          torch.Tensor]:
 
         # encoder
         z = self.encoder(x)
-        u = torch.log1p(F.softplus(z) + eps)
 
-        # source embedding
-        v = self.embed_src(src)
+        if src is not None:
+            # source embedding
+            v = self.embed_src(src)
 
-        # decoder
-        h = torch.cat((u, v), dim = -1)
-        x_hat = self.decoder(h)
-        return x_hat, z
+            # decoder
+            u = torch.log1p(F.softplus(z) + eps)
+            h = torch.cat((u, v), dim = -1)
+            x_hat = self.decoder(h)
+            return x_hat, z
+
+        else:
+            return z
 
     def _initialize_weights(self) -> None:
         if self.activation is nn.ReLU:

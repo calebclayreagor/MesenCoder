@@ -27,18 +27,15 @@ adata.var_names = adata.var_names.map(id_dict)
 # load phenotype data
 fn_pheno = os.path.join(pth_in, 'Survival_SupplementalTable_S1_20171025_xena_sp.tsv')
 df = pd.read_csv(fn_pheno, delimiter = '\t', index_col = 0)
-df['source'] = 'TCGA'   # cat code = 0 (same as CCCA)
 adata.obs = adata.obs.join(df.astype(str), how = 'left')
-adata = adata[~adata.obs.source.isna()].copy()
 
 # keep features (mouse genes [homologs])
 features = pd.read_csv(os.path.join(pth_feat, 'union.csv'))
-feat_msk = adata.var_names.isin(features.hsapiens)
-adata = adata[:, feat_msk].copy()
+adata = adata[:, adata.var_names.isin(features.hsapiens)].copy()
 var_dict = features.set_index('hsapiens').mmusculus.to_dict()
 adata.var_names = adata.var_names.map(var_dict)
 
-# all training features
+# all dev features
 adata_dev = sc.read_h5ad(os.path.join(pth_out, 'development.h5ad'))
 X = csr_matrix((adata.shape[0], adata_dev.shape[1]), dtype = adata.X.dtype)
 X[:, adata_dev.var_names.get_indexer(adata.var_names)] = adata.X.copy()

@@ -19,7 +19,7 @@ if __name__ == '__main__':
     parser.add_argument('--learning_rate', type = float, default = 1e-3)
     parser.add_argument('--max_epochs', type = int, default = 200)
     parser.add_argument('--patience', type = int, default = 10)
-    parser.add_argument('--val_log_freq', type = int, default = 5)
+    parser.add_argument('--val_log_freq', type = int, default = 10)
     parser.add_argument('--save_ckpt', action = 'store_true')
     parser.add_argument('--wandb_project', type = str, default = 'MesenCoder')
     parser.add_argument('--num_workers', type = int, default = 32)
@@ -29,12 +29,13 @@ if __name__ == '__main__':
 
     # training/validation datasets
     datadir = os.path.join('..', 'data', 'modeling')
-    adata = ad.read_h5ad(os.path.join(datadir, 'training.h5ad'))
+    adata = ad.read_h5ad(os.path.join(datadir, 'development.h5ad'))
     train_ix = (adata.obs.training == 'True')
-    adata_train = adata[train_ix]
-    adata_val = adata[~train_ix]
-    train_ds = MesenchymeDataset(adata_train)
-    val_ds = MesenchymeDataset(adata_val) 
+    val_ix = (adata.obs.validation == 'True')
+    adata_train = adata[train_ix].copy()
+    adata_val = adata[val_ix].copy()
+    train_ds = MesenchymeDataset(adata_train, True)
+    val_ds = MesenchymeDataset(adata_val, True) 
 
     # training sampler
     sampler = WeightedRandomSampler(
@@ -91,6 +92,7 @@ if __name__ == '__main__':
         accelerator = 'auto',
         devices = 'auto',
         num_sanity_val_steps = 0,
+        log_every_n_steps = 4,
         enable_checkpointing = args.save_ckpt)
 
     # train

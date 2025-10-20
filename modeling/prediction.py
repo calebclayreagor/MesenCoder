@@ -20,7 +20,7 @@ if __name__ == '__main__':
 
     # prediction dataset
     adata = ad.read_h5ad(args.adata_pth)
-    pred_ds = MesenchymeDataset(adata)
+    pred_ds = MesenchymeDataset(adata, False)
 
     # dataloader
     pred_dl = DataLoader(
