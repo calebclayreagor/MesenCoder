@@ -80,6 +80,6 @@ weight /= weight.mean()
 adata.obs['weight'] = weight
 
 # save dataset
-adata.write(os.path.join(pth, 'modeling', 'development.h5ad'))
+adata.write(os.path.join(pth, 'modeling', 'inputs', 'development.h5ad'))
 
 #%%

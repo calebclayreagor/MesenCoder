@@ -15,7 +15,6 @@ if __name__ == '__main__':
     parser.add_argument('--batch_size', type = int, default = 1024)
     parser.add_argument('--num_workers', type = int, default = 32)
     args = parser.parse_args()
-
     L.seed_everything(1)
 
     # prediction dataset

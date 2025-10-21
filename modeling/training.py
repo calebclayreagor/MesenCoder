@@ -5,7 +5,6 @@ from torch.utils.data import DataLoader
 from torch.utils.data import WeightedRandomSampler
 from lightning.pytorch.loggers import WandbLogger
 from lightning.pytorch.callbacks import ModelCheckpoint
-from lightning.pytorch.callbacks import EarlyStopping
 from lit_module import MesenchymalStates
 from dataset import MesenchymeDataset
 
@@ -18,24 +17,20 @@ if __name__ == '__main__':
     parser.add_argument('--batch_size', type = int, default = 1024)
     parser.add_argument('--learning_rate', type = float, default = 1e-3)
     parser.add_argument('--max_epochs', type = int, default = 200)
-    parser.add_argument('--patience', type = int, default = 10)
     parser.add_argument('--val_log_freq', type = int, default = 10)
     parser.add_argument('--save_ckpt', action = 'store_true')
     parser.add_argument('--wandb_project', type = str, default = 'MesenCoder')
     parser.add_argument('--num_workers', type = int, default = 32)
     args = parser.parse_args()
-
     L.seed_everything(1)
 
     # training/validation datasets
-    datadir = os.path.join('..', 'data', 'modeling')
+    datadir = os.path.join('..', 'data', 'modeling', 'inputs')
     adata = ad.read_h5ad(os.path.join(datadir, 'development.h5ad'))
-    train_ix = (adata.obs.training == 'True')
-    val_ix = (adata.obs.validation == 'True')
-    adata_train = adata[train_ix].copy()
-    adata_val = adata[val_ix].copy()
+    adata_train = adata[adata.obs.training == 'True'].copy()
+    adata_val = adata[adata.obs.validation == 'True'].copy()
     train_ds = MesenchymeDataset(adata_train, True)
-    val_ds = MesenchymeDataset(adata_val, True) 
+    val_ds = MesenchymeDataset(adata_val, True)
 
     # training sampler
     sampler = WeightedRandomSampler(
@@ -68,27 +63,22 @@ if __name__ == '__main__':
         log_model = args.save_ckpt)
     logger.watch(model, log = 'all')
 
-    # callbacks
-    callbacks = [
-        EarlyStopping(
-            monitor = 'val_loss',
-            patience = args.patience,
-            mode = 'min')]
+    # checkpoints
     if args.save_ckpt:
-        callbacks.append(
-            ModelCheckpoint(
-                every_n_epochs = args.val_log_freq,
-                save_top_k = -1,
-                save_last = False,
-                dirpath = os.path.join(
-                    'checkpoints', args.wandb_project),
-                filename = '{epoch:02d}'))
+        checkpoints = ModelCheckpoint(
+            every_n_epochs = args.val_log_freq,
+            save_top_k = -1,
+            save_last = False,
+            dirpath = os.path.join(
+                'checkpoints', args.wandb_project),
+            filename = '{epoch:02d}')
+    else: checkpoints = None
 
     # trainer
     trainer = L.Trainer(
         max_epochs = args.max_epochs,
         logger = logger,
-        callbacks = callbacks,
+        callbacks = checkpoints,
         accelerator = 'auto',
         devices = 'auto',
         num_sanity_val_steps = 0,

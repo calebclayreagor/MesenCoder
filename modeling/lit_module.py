@@ -93,6 +93,8 @@ class MesenchymalStates(L.LightningModule):
         self.pred_latent_z[ix] = z
 
     def on_validation_epoch_start(self) -> None:
+        if self.current_epoch > 0:
+            self.val_latent_z_prev = self.val_latent_z.copy()
         self.val_latent_z = np.zeros(
             len(self.trainer.val_dataloaders.dataset),
             dtype = np.float32)
@@ -103,35 +105,49 @@ class MesenchymalStates(L.LightningModule):
             dtype = np.float32)
 
     def on_validation_epoch_end(self) -> None:
-        if self.current_epoch > 0 and (self.current_epoch + 1) % self.hparams.val_log_freq == 0:
-            adata = self.trainer.val_dataloaders.dataset.adata
-            adata.obs['latent_z'] = self.val_latent_z.copy()
-            data = adata[~adata.obs.celltype.isin(['nan'])].obs.copy()
-            yvar, hue = 'celltype', 'source'
-            order = (data.groupby(yvar)
-                     .agg({'latent_z' : 'median', hue : 'first'})
-                     .sort_values([hue, 'latent_z']).index)
-            fig, ax = plt.subplots(1, 1, figsize = (8, 6))
-            sns.violinplot(
-                data = data,
-                x = 'latent_z',
-                y = yvar,
-                hue = hue,
-                dodge = False,
-                order = order,
-                density_norm = 'width',
-                inner = 'quart',
-                ax = ax)
-            ax.get_legend().set_visible(False)
-            fig.tight_layout()
-            self.logger.experiment.log({
-                'val_latent_z' : wandb.Image(fig),
-                'epoch'        : self.current_epoch})
-            plt.close(fig)
+        if self.current_epoch > 0:
+            diff = self.val_latent_z - self.val_latent_z_prev
+            drift = np.mean(abs(diff))
+            self.log(
+                'val_drift_z', drift,
+                on_step = False,
+                on_epoch = True,
+                batch_size = len(self.val_latent_z),
+                sync_dist = True,
+                add_dataloader_idx = False)
+            
+            if (self.current_epoch + 1) % self.hparams.val_log_freq == 0:
+                adata = self.trainer.val_dataloaders.dataset.adata
+                adata.obs['latent_z'] = self.val_latent_z.copy()
+                data = adata[adata.obs.celltype != 'nan'].obs.copy()
+
+                x, y, hue = 'latent_z', 'celltype', 'source'
+                order = (data.groupby(y)
+                         .agg({x : 'median', hue : 'first'})
+                         .sort_values([hue, x]).index)
+                
+                fig, ax = plt.subplots(1, 1, figsize = (8, 6))
+                sns.violinplot(
+                    data = data,
+                    x = x,
+                    y = y,
+                    hue = hue,
+                    dodge = False,
+                    order = order,
+                    density_norm = 'width',
+                    inner = 'quart',
+                    ax = ax)
+                ax.get_legend().set_visible(False)
+                fig.tight_layout()
+
+                self.logger.experiment.log({
+                    'val_latent_z' : wandb.Image(fig),
+                    'epoch'        : self.current_epoch})
+                plt.close(fig)
 
     def on_predict_epoch_end(self) -> None:
         adata = self.trainer.predict_dataloaders.dataset.adata
-        adata.obs['latent_z'] = -self.pred_latent_z.copy()
+        adata.obs['latent_z'] = self.pred_latent_z.copy()
         adata.write(self.out_pth)
 
     def configure_optimizers(self) -> Optimizer:

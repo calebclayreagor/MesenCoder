@@ -10,17 +10,17 @@ from scipy.sparse import csr_matrix
 from utils.load import load_CCCA_adata
 np.random.seed(1)
 
-pth = os.path.join('..', '..')
-pth_out = os.path.join(pth, 'data', 'modeling')
+pth = os.path.join('..', '..', 'data')
+pth_out = os.path.join(pth, 'modeling', 'inputs')
 
 # datasets summary (CCCA)
-summary_df = pd.read_csv(os.path.join(pth, 'data', 'CCCA_summary.csv'), sep = '\t')
+summary_df = pd.read_csv(os.path.join(pth, 'CCCA_summary.csv'), sep = '\t')
 title = summary_df.Title.str.replace(' et al. ', '')
 cat = summary_df.Category.str.replace(' ', '-').replace('/', '-')
 summary_df['Name'] = 'Data_' + title + '_' + cat
 
 # dataset features
-feat_fn = os.path.join(pth, 'data', 'features', 'biomart', 'union.csv')
+feat_fn = os.path.join(pth, 'features', 'biomart', 'union.csv')
 feat_union = pd.read_csv(feat_fn)
 
 # preprocessing
@@ -43,7 +43,7 @@ for ix in summary_df.index:
     cat_ix = summary_df.loc[ix, 'Category']
     if cat_ix != 'Other/Models':
         name_ix = summary_df.loc[ix, 'Name']
-        dirname = os.path.join(pth, 'data', 'unzip', 'CCCA', name_ix)
+        dirname = os.path.join(pth, 'unzip', 'CCCA', name_ix)
         for dirpth, subdir, _ in os.walk(dirname):
             key = name_ix
             if dirpth != dirname:

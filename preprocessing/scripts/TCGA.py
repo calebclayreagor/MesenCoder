@@ -9,7 +9,7 @@ from scipy.sparse import csr_matrix
 pth = os.path.join('..', '..', 'data')
 pth_in = os.path.join(pth, 'unzip', 'TCGA')
 pth_feat = os.path.join(pth, 'features', 'biomart')
-pth_out = os.path.join(pth, 'modeling')
+pth_out = os.path.join(pth, 'modeling', 'inputs')
 
 # load dataset [log2(TPM + 1e-3) -> log1p(TPM)]
 fn_data = os.path.join(pth_in, 'tcga_RSEM_gene_tpm.tsv')
