@@ -23,13 +23,12 @@ if __name__ == '__main__':
     parser.add_argument('--num_workers', type = int, default = 32)
     parser.add_argument('--device', type = str, default = 'cuda')
     args = parser.parse_args()
-
     L.seed_everything(1)
     device = torch.device(args.device)
 
     # prediction dataset
     adata = ad.read_h5ad(args.adata_pth)
-    pred_ds = MesenchymeDataset(adata)
+    pred_ds = MesenchymeDataset(adata, args.dec_attr)
 
     # dataloader
     pred_dl = DataLoader(
@@ -46,8 +45,8 @@ if __name__ == '__main__':
 
     # IG_x(z) (encoder attribution)
     def fwd_enc(x: torch.Tensor) -> torch.Tensor:
-        u = model.encoder(x)
-        return torch.log1p(F.softplus(u) + 1e-6)
+        scale_01 = lambda s: 2 * F.sigmoid(s) - 1
+        return scale_01(torch.abs(model.encoder(x)))
     ig_z = IntegratedGradients(fwd_enc)
 
     if args.dec_attr:
@@ -64,8 +63,12 @@ if __name__ == '__main__':
     # loop over mini-batches
     attr_z = np.zeros(adata.shape)
     for batch in tqdm(pred_dl):
-        X, src, ix = batch
-        X, src = X.to(device), src.to(device)
+        if args.dec_attr:
+            X, src, ix = batch
+            src = src.to(device)
+        else:
+            X, ix = batch
+        X = X.to(device)
 
         # IG_x(z)
         attr_z[ix] = ig_z.attribute(inputs = X).detach().cpu().numpy()
