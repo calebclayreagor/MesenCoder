@@ -1,0 +1,12 @@
+source,celltype,latent_z
+GSE162534,Nascent Endothelium,0.81799036
+GSE162534,Lateral Plate Mesoderm,0.6508253
+rRNAModifications,Cranial Mesenchyme,0.58024406
+GSE136689,Splanchnic Mesoderm,0.42479566
+GSE229103,Presomitic Mesoderm,0.4054523
+GSE162534,Posterior Epiblast,0.33155993
+rRNAModifications,Migratory Neural Crest,0.2894358
+GSE229103,Neuromesodermal Progenitor,0.14742002
+HCAEmbryonicHindlimb,Limb Mesenchyme,0.11484553
+GSE162534,Epiblast,0.088755466
+rRNAModifications,Premigratory Neural Crest,0.08664575
