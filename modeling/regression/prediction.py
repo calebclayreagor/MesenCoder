@@ -5,13 +5,15 @@ import pandas as pd
 import scanpy as sc
 import statsmodels.api as sm
 
+# params
+name, groupby = 'CCCA', 'source'
+
+# load data
 pth = os.path.join('..', '..', 'data')
 pth_in = os.path.join(pth, 'modeling', 'inputs')
 pth_feat = os.path.join(pth, 'features', 'biomart')
 pth_out = os.path.join(pth, 'modeling', 'predict')
-
-# load CCCA data
-adata = sc.read_h5ad(os.path.join(pth_in, 'CCCA.h5ad'))
+adata = sc.read_h5ad(os.path.join(pth_in, f'{name}.h5ad'))
 
 # module signatures
 feat_fn = sorted(glob.glob(os.path.join(pth_feat, '*.csv')))
@@ -23,7 +25,7 @@ for src, fn in feat_dict.items():
     df_feat = pd.read_csv(fn)
     g = df_feat.mmusculus.copy()
     g = g.loc[g.isin(adata.var_names)]
-    for _, df_group in adata.obs.groupby('source', observed = True):
+    for _, df_group in adata.obs.groupby(groupby, observed = True):
         msk = adata.obs_names.isin(df_group.index)
         adata_group = adata[msk].copy()
         sc.tl.score_genes(adata_group,
@@ -41,6 +43,6 @@ z_pred = 1 / (1 + np.exp(-X_pred.dot(params)))
 adata.obs['latent_z_reg'] = z_pred
 
 # save
-adata.write(os.path.join(pth_out, 'CCCA.h5ad'))
+adata.write(os.path.join(pth_out, f'{name}.h5ad'))
 
 #%%
