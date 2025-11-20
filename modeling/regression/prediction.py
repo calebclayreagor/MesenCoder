@@ -14,6 +14,7 @@ pth_in = os.path.join(pth, 'modeling', 'inputs')
 pth_feat = os.path.join(pth, 'features', 'biomart')
 pth_out = os.path.join(pth, 'modeling', 'predict')
 adata = sc.read_h5ad(os.path.join(pth_in, f'{name}.h5ad'))
+reg = pd.read_csv('betareg.csv', index_col = 0)
 
 # module signatures
 feat_fn = sorted(glob.glob(os.path.join(pth_feat, '*.csv')))
@@ -35,14 +36,16 @@ for src, fn in feat_dict.items():
                           random_state = 1234)
         adata.obs.loc[msk, src] = adata_group.obs[src]
 
-# prediction (beta regression)
+# whiten features
 src_train = df.loc[df.Training == True].index
-params = pd.read_csv('params.csv', index_col = 0)
-X_pred = sm.add_constant(adata.obs[src_train])
-z_pred = 1 / (1 + np.exp(-X_pred.dot(params)))
-adata.obs['latent_z_reg'] = z_pred
+adata.obs[src_train] = (adata.obs[src_train]
+                        .sub(reg.loc[src_train].mu, axis = 1)
+                        .div(reg.loc[src_train].sigma, axis = 1))
 
-# save
+# prediction (beta regression)
+X_pred = sm.add_constant(adata.obs[src_train])
+z_pred = 1 / (1 + np.exp(-X_pred.dot(reg.beta)))
+adata.obs['latent_z_reg'] = z_pred
 adata.write(os.path.join(pth_out, f'{name}.h5ad'))
 
 #%%

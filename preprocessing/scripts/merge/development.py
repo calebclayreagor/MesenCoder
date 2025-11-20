@@ -6,7 +6,9 @@ import scanpy as sc
 import anndata as ad
 from scipy.stats import gmean
 np.random.seed(1)
-pth = os.path.join('..', '..', 'data')
+
+pth = os.path.join('..', '..', '..', 'data')
+pth_out = os.path.join(pth, 'modeling', 'inputs')
 
 # training/validation split
 train_frac = .8
@@ -65,7 +67,10 @@ for key in adata_dict:
     adata_dict[key] = adata
 
 # concatenate datasets
-adata = ad.concat(adata_dict, join = 'outer', merge = 'same', label = 'source')
+adata = ad.concat(adata_dict,
+                  join = 'outer',
+                  merge = 'same',
+                  label = 'source')
 adata.obs_names_make_unique()
 adata.obs = adata.obs.astype(str)
 
@@ -80,6 +85,6 @@ weight /= weight.mean()
 adata.obs['weight'] = weight
 
 # save dataset
-adata.write(os.path.join(pth, 'modeling', 'inputs', 'development.h5ad'))
+adata.write(os.path.join(pth_out, 'development.h5ad'))
 
 #%%
