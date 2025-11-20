@@ -8,8 +8,8 @@ name = 'CCCA'
 
 # load data
 pth = os.path.join('..', '..', 'data')
-pth_pred = os.path.join(pth, 'modeling', 'predict')
-pth_out = os.path.join(pth, 'modeling', 'attribution')
+pth_pred = os.path.join(pth, 'modeling', 'regression', 'predict')
+pth_out = os.path.join(pth, 'modeling', 'regression', 'attribution')
 adata = sc.read_h5ad(os.path.join(pth_pred, f'{name}.h5ad'))
 df = pd.read_csv(os.path.join(pth, 'summary.csv'), index_col = 0)
 reg = pd.read_csv('betareg.csv', index_col = 0)

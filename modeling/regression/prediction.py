@@ -12,7 +12,7 @@ name, groupby = 'CCCA', 'source'
 pth = os.path.join('..', '..', 'data')
 pth_in = os.path.join(pth, 'modeling', 'inputs')
 pth_feat = os.path.join(pth, 'features', 'biomart')
-pth_out = os.path.join(pth, 'modeling', 'predict')
+pth_out = os.path.join(pth, 'modeling', 'regression', 'predict')
 adata = sc.read_h5ad(os.path.join(pth_in, f'{name}.h5ad'))
 reg = pd.read_csv('betareg.csv', index_col = 0)
 
@@ -36,7 +36,7 @@ for src, fn in feat_dict.items():
                           random_state = 1234)
         adata.obs.loc[msk, src] = adata_group.obs[src]
 
-# whiten features
+# standardize features
 src_train = df.loc[df.Training == True].index
 adata.obs[src_train] = (adata.obs[src_train]
                         .sub(reg.loc[src_train].mu, axis = 1)
