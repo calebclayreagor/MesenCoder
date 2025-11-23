@@ -15,9 +15,9 @@ df = pd.read_csv(os.path.join(pth, 'summary.csv'), index_col = 0)
 reg = pd.read_csv('betareg.csv', index_col = 0)
 
 # attribution (X * beta)
-src_train = df.loc[df.Training == True].index
-X = adata.obs[src_train].copy()
-beta = reg.loc[src_train].beta.values.T
+src_reg = df.loc[df.Features].index
+X = adata.obs[src_reg].copy()
+beta = reg.loc[src_reg].beta.values.T
 attr = X.multiply(beta, axis = 1)
 adata.obsm['attributions'] = attr
 adata.write(os.path.join(pth_out, f'{name}.h5ad'))

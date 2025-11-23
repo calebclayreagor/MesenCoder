@@ -37,13 +37,13 @@ for src, fn in feat_dict.items():
         adata.obs.loc[msk, src] = adata_group.obs[src]
 
 # standardize features
-src_train = df.loc[df.Training == True].index
-adata.obs[src_train] = (adata.obs[src_train]
-                        .sub(reg.loc[src_train].mu, axis = 1)
-                        .div(reg.loc[src_train].sigma, axis = 1))
+src_reg = list(feat_dict.keys())
+adata.obs[src_reg] = (adata.obs[src_reg]
+                      .sub(reg.loc[src_reg].mu, axis = 1)
+                      .div(reg.loc[src_reg].sigma, axis = 1))
 
 # prediction (beta regression)
-X_pred = sm.add_constant(adata.obs[src_train])
+X_pred = sm.add_constant(adata.obs[src_reg])
 z_pred = 1 / (1 + np.exp(-X_pred.dot(reg.beta)))
 adata.obs['latent_z_reg'] = z_pred
 adata.write(os.path.join(pth_out, f'{name}.h5ad'))
