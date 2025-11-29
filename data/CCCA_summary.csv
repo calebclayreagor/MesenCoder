@@ -14,7 +14,6 @@ Qian et al. 2020	Lung	Lung Cancer	10x	8	27262
 Song et al. 2019	Lung	Non-Small Cell Lung Cancer	10x	6	8772 
 Xing et al. 2021	Lung	Lung Cancer	10x	31	118293 
 Zilionis et al. 2019	Lung	Non-Small Cell Lung Cancer	inDrop	7	31179 
-Ma et al. 2019	Liver/Biliary	Hepatocellular Carcinoma	10x	8	3018 
 Sharma et al. 2020	Liver/Biliary	Hepatocellular Carcinoma	10x	58	73589 
 Sun et al. 2021	Liver/Biliary	Hepatocellular Carcinoma	10x	18	16498 
 Zhang et al. 2019	Liver/Biliary	Hepatocellular Carcinoma	10x, SmartSeq2	42	73261 
@@ -26,42 +25,19 @@ Young et al. 2018	Kidney	Kidney Cancer	10x	66	125139
 Zhang et al. 2021	Kidney	Renal Cell Carcinoma	10x	14	29474 
 Chen et al. 2021	Prostate	Prostate Cancer	10x	13	36424 
 Dong et al. 2020	Prostate	Prostate Cancer	10x	6	21292 
-He et al. 2021	Prostate	Metastatic Prostate Cancer	SmartSeq2	15	2170 
+He et al. 2021	Prostate	Prostate Cancer	SmartSeq2	15	2170 
 Song et al. 2022	Prostate	Prostate Cancer	Seq-Well S3	15	21743 
 Jerby-Arnon et al. 2021	Sarcoma	Synovial Sarcoma	10x, SmartSeq2	15	16125 
 Zhou et al. 2020	Sarcoma	Osteosarcoma	10x	11	64557 
-Aynaud et al. 2020	Other/Models	Ewing Sarcoma	10x, Fluidigm C1	14	16337 
-Cui et al. 2021	Other/Models	Pituitary Neuroendocrine Tumors	STRT seq	23	2679 
-Dost et al. 2020	Other/Models	Lung Cancer	10x	10	32661 
-Durante et al. 2020	Other/Models	Uveal Melanoma	10x	11	103703 
-Ebinger et al. 2016	Other/Models	Acute Lymphoblastic Leukemia	SMARTer	5	185 
-Franses et al. 2017	Other/Models	Pancreatic Cancer	NA	3	34 
-Franses et al. 2020	Other/Models	Pancreatic Ductal Adenocarcinoma	10x	4	81 
-Gonzalez et al. 2022	Other/Models	Brain Metastases	10x	15	99150 
-Gubin et al. 2018	Other/Models	Sarcoma	10x	4	14618 
-Hollern et al. 2019	Other/Models	Triple-Negative Breast Cancer	10x	4	27532 
-Jansky et al. 2021	Other/Models	Neuroblastoma	MARS-seq	4	4028 
-Jordan et al. 2016	Other/Models	Breast Cancer	NA	16	74 
-Kinker et al. 2020	Other/Models	Cancer Cell Line Models	10x	198	53513 
-Kumar et al. 2022	Other/Models	Gastric Cancer	10x	40	158500 
-Ligorio et al. 2019	Other/Models	Pancreatic Ductal Adenocarcinoma	SMARTer	4	93 
-Massalha et al. 2020	Other/Models	Liver Metastases	10x	5	1354 
-Mercatelli et al. 2021	Other/Models	Neuroblastoma	10x	2	2067 
-Miyamoto et al. 2015	Other/Models	Prostate Cancer	NA	26	169 
-Raghavan et al. 2021	Other/Models	Pancreatic Ductal Adenocarcinoma	Seq-Well	53	41663 
-Sun et al. 2021	Other/Models	Hepatocellular Carcinoma	SmartSeq2	10	113 
-Yao et al. 2020	Other/Models	Esophageal Squamous Cell Carcinoma	10x	6	35847 
-Yu et al. 2012	Other/Models	Pancreatic Ductal Adenocarcinoma	EpCAM or IgG CTC-Chip	2	32 
-Zhang et al. 2019	Other/Models	Gastric Cancer	10x	13	56440 
 Choudhury et al. 2022	Brain	Meningioma	10x	10	58843 
 Couturier et al. 2020	Brain	Glioblastoma	10x	29	100335 
 Darmanis et al. 2017	Brain	Glioblastoma	SmartSeq2	4	3589 
-Filbin et al. 2018	Brain	Pediatric H3-K27M Mutant Glioma	SmartSeq2	7	2587 
-Gojo et al. 2020	Brain	Pediatric Ependymoma	SmartSeq2	25	6739 
+Filbin et al. 2018	Brain	High-Grade Glioma	SmartSeq2	7	2587 
+Gojo et al. 2020	Brain	Ependymoma	SmartSeq2	25	6739 
 Hovestadt et al. 2019	Brain	Medulloblastoma	SmartSeq2	36	8691 
 Neftel et al. 2019	Brain	Glioblastoma	SmartSeq2	38	24131 
-Tirosh et al. 2016	Brain	IDH-Mutant Oligodendroglioma	SmartSeq2	6	4347 
-Venteicher et al. 2017	Brain	IDH-Mutant Astrocytoma	SmartSeq2	10	6341 
+Tirosh et al. 2016	Brain	Low-Grade Glioma	SmartSeq2	6	4347 
+Venteicher et al. 2017	Brain	Low-Grade Glioma	SmartSeq2	10	6341 
 Wang et al. 2019	Brain	Glioblastoma	10x	10	16317 
 Yuan et al. 2018	Brain	High-Grade Glioma	Microwell array-based platform	8	23793 
 Azizi et al. 2018	Breast	Breast Cancer	10x, InDrop	58	75029 
@@ -87,33 +63,31 @@ Yue et al. 2020	Pancreas	Pancreatic Ductal Adenocarcinoma	10x	15	33970
 Dong et al. 2020	Neuroendocrine	Neuroblastoma	10x	13	55190 
 Jansky et al. 2021	Neuroendocrine	Neuroblastoma	10x	14	64769 
 Kildisiute et al. 2021	Neuroendocrine	Neuroblastoma	10x, CEL-seq2	21	19723 
-Rao et al. 2020	Neuroendocrine	Small Intestinal Neuroendocrine Tumor	10x	2	4739 
 Chen et al. 2021	Colorectal	Colon Adenoma	Modified InDrop	121	122811 
 Lee et al. 2020	Colorectal	Colorectal Cancer	10x	15	21657 
 Li et al. 2017	Colorectal	Colorectal Cancer	SmartSeq2	18	590 
 Pelka et al. 2021	Colorectal	Colorectal Cancer	10x	100	370115 
 Zhang et al. 2018	Colorectal	Colorectal Cancer	SmartSeq2	33	11138 
-Geistlinger et al. 2020	Ovarian	High-Grade Serous Ovarian Cancer	10x	5	41031 
-Izar et al. 2020	Ovarian	High-Grade Serous Ovarian Cancer	10x, SmartSeq2	14	10788 
-Nath et al. 2021	Ovarian	High-Grade Serous Ovarian Cancer	10x, iCell8	18	41729 
+Geistlinger et al. 2020	Ovarian	High-Grade Ovarian Cancer	10x	5	41031 
+Izar et al. 2020	Ovarian	High-Grade Ovarian Cancer	10x, SmartSeq2	14	10788 
+Nath et al. 2021	Ovarian	High-Grade Ovarian Cancer	10x, iCell8	18	41729 
 Olalekan et al. 2021	Ovarian	Ovarian Cancer	Drop-seq	6	9885 
-Olbrecht et al. 2021	Ovarian	High-Grade Serous Tubo-Ovarian Cancer	10x	11	15528 
+Olbrecht et al. 2021	Ovarian	High-Grade Ovarian Cancer	10x	11	15528 
 Qian et al. 2020	Ovarian	Ovarian Cancer	10x	4	16951 
-Regner et al. 2021	Ovarian	Gynecologic Cancer	10x	11	65144 
 Shih et al. 2018	Ovarian	Ovarian Cancer	SmartSeq2	18	3066 
 Tang-Huau et al. 2018	Ovarian	Ovarian Cancer	10x	4	8404 
-Zhang et al. 2019	Ovarian	High-Grade Serous Ovarian Cancer	10x	2	4848 
-Zhang et al. 2022	Ovarian	High-Grade Serous Ovarian Cancer	10x	22	51786 
+Zhang et al. 2019	Ovarian	High-Grade Ovarian Cancer	10x	2	4848 
+Zhang et al. 2022	Ovarian	High-Grade Ovarian Cancer	10x	22	51786 
 Biermann et al. 2022	Skin	Metastatic Melanoma	10x	32	136973 
 Ferrari de Andrade et al. 2019	Skin	Metastatic Melanoma	10x	12	40823 
 Jerby-Arnon et al. 2018	Skin	Melanoma	SmartSeq2	32	7186 
-Ji et al. 2020	Skin	Cutaneous Squamous Cell Carcinoma	10x	10	48164 
+Ji et al. 2020	Skin	Skin Cancer	10x	10	48164 
 Li et al. 2019	Skin	Melanoma	MARS-seq	27	78336 
 Mahuron et al. 2020	Skin	Metastatic Melanoma	10x	6	27935 
 Paulson et al. 2020	Skin	Merkel Cell Carcinoma	10x	8	31376 
 Sade-Feldman et al. 2018	Skin	Melanoma	SmartSeq2	48	16291 
 Tirosh et al. 2016	Skin	Melanoma	SmartSeq2	19	4645 
-Yost et al. 2019	Skin	Basal and Squamous Cell Carcinoma	10x	30	79046 
+Yost et al. 2019	Skin	Skin Cancer	10x	30	79046 
 Caron et al. 2020	Hematologic	Acute Lymphoblastic Leukemia	10x	10	37320 
 Cohen et al. 2021	Hematologic	Multiple Myeloma	MARS-seq	74	39157 
 Gaiti et al. 2019	Hematologic	Chronic Lymphocytic Leukemia	SmartSeq2	8	720 
@@ -126,6 +100,6 @@ Nam et al. 2019	Hematologic	Myeloproliferative Neoplasms	10x	10	31703
 Rendeiro et al. 2020	Hematologic	Chronic Lymphocytic Leukemia	10x	12	48016 
 Riether et al. 2020	Hematologic	Acute Myeloid Leukemia	10x	4	8103 
 Roider et al. 2020	Hematologic	B-Cell Lymphoma	10x	12	35278 
-Steen et al. 2021	Hematologic	Diffuse Large B-Cell Lymphoma	10x	10	18197 
+Steen et al. 2021	Hematologic	B-Cell Lymphoma	10x	10	18197 
 Wu et al. 2020	Hematologic	Acute Myeloid Leukemia	Microwell-seq	41	194571 
-Zhang et al. 2019	Hematologic	Follicular Lymphoma	10x	4	7002 
+Zhang et al. 2019	Hematologic	B-Cell Lymphoma	10x	4	7002 

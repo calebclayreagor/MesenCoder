@@ -39,20 +39,18 @@ def preprocess(adata: ad.AnnData) -> ad.AnnData:
 # prepare datasets
 adata_dict = dict()
 for ix in summary_df.index:
-    cat_ix = summary_df.loc[ix].Category
-    if cat_ix != 'Other/Models':
-        name_ix = summary_df.loc[ix].Name
-        dirname = os.path.join(pth, 'unzip', 'CCCA', name_ix)
-        if os.path.exists(dirname):
-            for dirpth, subdir, _ in os.walk(dirname):
-                if len(subdir) == 0:
-                    adata = load_CCCA_adata(dirpth)
-                    adata = preprocess(adata)
-                    for col in summary_df.columns:
-                        adata.obs[col] = summary_df.loc[ix, col]
-                    adata_dict[dirpth] = adata
-        else:
-            print(f'WARNING: The directory {dirname} does not exist!')
+    name_ix = summary_df.loc[ix].Name
+    dirname = os.path.join(pth, 'unzip', 'CCCA', name_ix)
+    if os.path.exists(dirname):
+        for dirpth, subdir, _ in os.walk(dirname):
+            if len(subdir) == 0:
+                adata = load_CCCA_adata(dirpth)
+                adata = preprocess(adata)
+                for col in summary_df.columns:
+                    adata.obs[col] = summary_df.loc[ix, col]
+                adata_dict[dirpth] = adata
+    else:
+        print(f'WARNING: The directory {dirname} does not exist!')
 
 # concatenate datasets (all dev feaures)
 adata = ad.concat(adata_dict,
