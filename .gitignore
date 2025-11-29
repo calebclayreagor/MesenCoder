@@ -17,6 +17,7 @@ data/unzip/
 data/processed/
 data/trajectories/
 data/modeling/
+data/cancer/
 
 # === OS & editor-specific files ===
 .DS_Store

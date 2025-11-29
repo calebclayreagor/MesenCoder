@@ -10,7 +10,7 @@ from utils.load import load_CCCA_adata
 np.random.seed(1)
 
 pth = os.path.join('..', '..', '..', 'data')
-pth_out = os.path.join(pth, 'modeling', 'inputs')
+pth_out = os.path.join(pth, 'cancer')
 
 # datasets summary (CCCA)
 summary_df = pd.read_csv(os.path.join(pth, 'CCCA_summary.csv'), sep = '\t')
