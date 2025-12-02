@@ -1,15 +1,14 @@
 #%%
-import os, sys
+import os
 import numpy as np
 import pandas as pd
 import scanpy as sc
 import anndata as ad
 from scipy.sparse import csr_matrix
-sys.path.append(os.path.join('..', '..'))
 from utils.load import load_CCCA_adata
 np.random.seed(1)
 
-pth = os.path.join('..', '..', '..', 'data')
+pth = os.path.join('..', '..', 'data')
 pth_out = os.path.join(pth, 'cancer')
 
 # datasets summary (CCCA)

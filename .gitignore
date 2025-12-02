@@ -31,6 +31,7 @@ DELAY/requirements.txt
 DELAY/README.md
 DELAY/LICENSE.md
 DELAY/DELAY.png
+DELAY/.gitignore
 DELAY/Networks/
 DELAY/example-data/
 DELAY/DELAY/

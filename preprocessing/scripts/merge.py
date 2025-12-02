@@ -7,7 +7,7 @@ import anndata as ad
 from scipy.stats import gmean
 np.random.seed(1)
 
-pth = os.path.join('..', '..', '..', 'data')
+pth = os.path.join('..', '..', 'data')
 pth_out = os.path.join(pth, 'modeling', 'inputs')
 
 # training/validation split
