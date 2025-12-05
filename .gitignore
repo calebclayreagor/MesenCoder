@@ -13,6 +13,7 @@ modeling/lightning_logs/
 
 # === Data files ===
 data/raw/
+data/ref/
 data/unzip/
 data/processed/
 data/trajectories/

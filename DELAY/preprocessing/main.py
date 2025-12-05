@@ -3,12 +3,13 @@ import os
 import pandas as pd
 import scanpy as sc
 
-pth = os.path.join('..', 'data')
+pth = os.path.join('..', '..', 'data')
 pth_in = os.path.join(pth, 'modeling', 'inputs')
 pth_feat = os.path.join(pth, 'features')
 pth_mod = os.path.join(pth_feat, 'biomart', 'modules')
 pth_tf = os.path.join(pth_feat, 'AnimalTFDB4')
 pth_out = os.path.join(pth, 'DELAY')
+
 names = ('GSE162534', 'GSE229103', 'rRNAModifications')
 
 # load data
