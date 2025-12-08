@@ -1,13 +1,15 @@
-Source,Name,Study,Species,Trajectory,Dataset,Features,Training,Trajectory Embedding,Age,Description
-GSE136689,Splanchnic Mesoderm,"Han et al., 2020",mmusculus,True,True,True,True,X_umap,E8.5-9.5,Foregut organogenesis dataset showing interactions between splanchnic mesoderm and definitive endoderm
-GSE162534,Primitive Streak,"Scheibner et al., 2021",mmusculus,True,True,True,True,X_umap,Early-Late Streak,Gastrulation dataset analyzing EMT programs during endodermal and mesodermal specification
-GSE201257,Schwann Cell Precursor,"Kastriti et al, 2022",mmusculus,True,True,True,False,X_umap,E9.5-Adult,Neural crest cell atlas describing diversification of glial-cell lineages from neurulation to adulthood
-GSE229103,Neuromesodermal Progenitor,"Jin et al., 2025",mmusculus,True,True,True,True,X_umap,E8.5,Developmental dataset describing bipotent neuromesodermal progenitors in the elongating caudal trunk
-HCAEmbryonicHindlimb,Embryonic Hindlimb,"Zhang et al., 2024",hsapiens,True,True,True,True,X_draw_graph_fa,PCW5-9,Embryonic hindlimb atlas focusing on spatial and temporal gene expression programs
-rRNAModifications,Cranial Neural Crest,"Poverennaya et al.",mmusculus,True,True,True,True,X_umap,E8.5-10.5,Neural crest cell dataset showing the bifurcation between cranial mesenchyme and neural crest
-CCCA,Curated Cancer Cell Atlas,"Tyler et al., 2025",hsapiens,False,True,False,False,NA,Primary & Metastatic,Cancer atlas containing 70+ curated single-cell datasets spanning >100 cancer subtypes
-EMTHallmark,EMT Hallmark,"Liberzon et al., 2015",hsapiens,False,False,True,NA,NA,NA,"Genes defining epithelial-mesenchymal transition as in wound healing, fibrosis, and metastasis (v2025.1.Hs)"
-TCGA,The Cancer Genome Atlas,"TCGA Network, 2013",hsapiens,False,True,False,False,NA,Primary & Metastatic,The Cancer Genome Atlas dataset of >40 cancer types with bulk sequencing for >10000 tumors
-GSE230319,TF Cooperativity,"Kim et al., 2024",hsapiens,False,True,False,False,NA,NA,Epigenomic analyses of TF cooperativity in embryonic face and limb-bud mesenchyme using human cell lines
-GSE84899,Axial Progenitor Niche,"Amin et al., 2016",mmusculus,False,True,False,False,NA,NA,Transcription factor binding analysis for axial extension GRN using cultured mouse epiblast stem cells
-GSE93524,NMP Fate Choice,"Koch et al., 2017",mmusculus,False,True,False,False,NA,NA,Analysis of direct binding sites for TFs in neuromesodermal progenitors using cultured embryonic stem cells
+Source,Name,Study,Species,Trajectory,Features,Training,Trajectory Embedding,Age,Description
+GSE162534,Primitive Streak,"Scheibner et al., 2021",mmusculus,True,True,True,X_umap,Early-Late Streak,Gastrulation dataset analyzing EMT programs during endodermal and mesodermal specification
+GSE229103,Neuromesodermal Progenitor,"Jin et al., 2025",mmusculus,True,True,True,X_umap,E8.5,Developmental dataset describing bipotent neuromesodermal progenitors in the elongating caudal trunk
+GSE136689,Splanchnic Mesoderm,"Han et al., 2020",mmusculus,True,True,True,X_umap,E8.5-9.5,Foregut organogenesis dataset showing interactions between splanchnic mesoderm and definitive endoderm
+HCAEmbryonicHindlimb,Embryonic Hindlimb,"Zhang et al., 2024",hsapiens,True,True,True,X_draw_graph_fa,PCW5-9,Embryonic hindlimb atlas focusing on spatial and temporal gene expression programs
+rRNAModifications,Cranial Neural Crest,"Poverennaya et al.",mmusculus,True,True,True,X_umap,E8.5-10.5,Neural crest cell dataset showing the bifurcation between cranial mesenchyme and neuroglia
+GSE201257,Schwann Cell Precursor,"Kastriti et al, 2022",mmusculus,True,True,False,X_umap,E9.5-Adult,Neural crest cell atlas describing diversification of glial cell lineages from neurulation to adulthood
+EMTHallmark,EMT Hallmark,"Liberzon et al., 2015",hsapiens,False,True,NA,NA,NA,"Genes defining epithelial-mesenchymal transition as in wound healing, fibrosis, and metastasis (v2025.1.Hs)"
+GSE128466,Mesendoderm Segregation,"Tosic et al., 2019",mmusculus,False,False,NA,NA,NA,Analysis of mesendodermal TF-binding landscape during pluripotency exit in mouse embryonic stem cells
+GSE272849,Mesendoderm Differentiation,"Schröder et al., 2025",mmusculus,False,False,NA,NA,NA,Analysis of chromatin landscapes and TF-binding dynamics during mouse mesendoderm differentiation
+GSE84899,Axial Progenitor Niche,"Amin et al., 2016",mmusculus,False,False,NA,NA,NA,Transcription factor binding analysis for axial-extension GRN using cultured mouse epiblast stem cells
+GSE93524,Neuromesodermal Fates,"Koch et al., 2017",mmusculus,False,False,NA,NA,NA,Analysis of direct TF binding sites in neuromesodermal progenitors using cultured embryonic stem cells
+GSE230319,TF Cooperativity,"Kim et al., 2024",hsapiens,False,False,NA,NA,NA,Epigenomic analysis of TF cooperativity in embryonic face and limb-bud mesenchyme development using human cell lines
+CCCA,Curated Cancer Cell Atlas,"Tyler et al., 2025",hsapiens,False,False,NA,NA,NA,Cancer cell atlas containing 70+ curated single-cell datasets spanning >100 cancer subtypes
+TCGA,The Cancer Genome Atlas,"TCGA Network, 2013",hsapiens,False,False,NA,NA,NA,The Cancer Genome Atlas dataset of >40 cancer types with bulk sequencing for >10000 tumors
