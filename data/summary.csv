@@ -9,3 +9,5 @@ CCCA,Curated Cancer Cell Atlas,"Tyler et al., 2025",hsapiens,False,True,False,Fa
 EMTHallmark,EMT Hallmark,"Liberzon et al., 2015",hsapiens,False,False,True,NA,NA,NA,"Genes defining epithelial-mesenchymal transition as in wound healing, fibrosis, and metastasis (v2025.1.Hs)"
 TCGA,The Cancer Genome Atlas,"TCGA Network, 2013",hsapiens,False,True,False,False,NA,Primary & Metastatic,The Cancer Genome Atlas dataset of >40 cancer types with bulk sequencing for >10000 tumors
 GSE230319,TF Cooperativity,"Kim et al., 2024",hsapiens,False,True,False,False,NA,NA,Epigenomic analyses of TF cooperativity in embryonic face and limb-bud mesenchyme using human cell lines
+GSE84899,Axial Progenitor Niche,"Amin et al., 2016",mmusculus,False,True,False,False,NA,NA,Transcription factor binding analysis for axial extension GRN using cultured mouse epiblast stem cells
+GSE93524,NMP Fate Choice,"Koch et al., 2017",mmusculus,False,True,False,False,NA,NA,Analysis of direct binding sites for TFs in neuromesodermal progenitors using cultured embryonic stem cells
