@@ -23,6 +23,9 @@ data/DELAY/*/NormalizedData.csv
 data/DELAY/*/PseudoTime.csv
 data/DELAY/*/TranscriptionFactors.csv
 data/features/AnimalTFDB4
+data/DELAY/*/training
+data/DELAY/*/validation
+data/DELAY/*/prediction
 
 # === OS & editor-specific files ===
 .DS_Store
@@ -41,3 +44,4 @@ DELAY/Networks/
 DELAY/example-data/
 DELAY/DELAY/
 DELAY/Checkpoints/
+DELAY/RESULTS/
