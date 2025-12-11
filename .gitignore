@@ -19,13 +19,13 @@ data/processed/
 data/trajectories/
 data/modeling/
 data/cancer/
-data/DELAY/*/NormalizedData.csv
-data/DELAY/*/PseudoTime.csv
-data/DELAY/*/TranscriptionFactors.csv
 data/features/AnimalTFDB4
-data/DELAY/*/training
-data/DELAY/*/validation
-data/DELAY/*/prediction
+data/DELAY/NormalizedData.csv
+data/DELAY/PseudoTime.csv
+data/DELAY/TranscriptionFactors.csv
+data/DELAY/training
+data/DELAY/validation
+data/DELAY/prediction
 
 # === OS & editor-specific files ===
 .DS_Store
