@@ -16,7 +16,7 @@ A.columns = A.columns.str.capitalize()
 A = A.rename(columns = {'1700017b05rik' : '1700017B05Rik'})
 
 # save regulons
-for name in ('Gata4', 'Twist1', 'Snai1'):
+for name in ('Twist1', 'Gata4'):
     tgt = A.columns[A.loc[name]]
     g_out = g.loc[g.mmusculus.isin(tgt)]
     fn = os.path.join(pth_out, f'{name}.csv')
