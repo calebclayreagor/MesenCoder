@@ -14,17 +14,22 @@ g = pd.read_csv(os.path.join(pth_mod, 'union.csv')).mmusculus
 fn = os.path.join(pth_tf, 'Mus_musculus_TF.txt')
 tf_ref = pd.read_csv(fn, sep = '\t').Symbol
 
-# select trajectories
+# select trajectories (pooling)
 src = ('GSE162534', 'GSE229103', 'rRNAModifications')
 adata = sc.read_h5ad(os.path.join(pth_in, 'development.h5ad'))
 msk_traj = (adata.obs.trajectory == 'True')
 msk_src = adata.obs.source.isin(src)
 adata = adata[(msk_traj & msk_src), g]
 
+# balance data (random sampling)
+grp = adata.obs.groupby('source', observed = True)
+rand = grp.sample(n = grp.size().min(), random_state = 1)
+adata = adata[adata.obs_names.isin(rand.index)]
+
 # save outputs
 X = pd.DataFrame(adata.X.toarray(), index = adata.obs_names,
                  columns = adata.var_names)
-z = adata.obs.latent_z.rename('PseudoTime').astype(float)
+z = adata.obs.latent_z.rename('PseudoTime')
 tf = adata.var_names.to_series().loc[adata.var_names.isin(tf_ref)]
 X.T.to_csv(os.path.join(pth_out, 'NormalizedData.csv'))
 z.to_csv(os.path.join(pth_out, 'PseudoTime.csv'))
