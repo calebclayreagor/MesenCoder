@@ -22,14 +22,14 @@ src = ('GSE162534', 'GSE229103', 'rRNAModifications')
 adata = sc.read_h5ad(os.path.join(pth_in, 'development.h5ad'))
 msk_traj = (adata.obs.trajectory == 'True')
 msk_src = adata.obs.source.isin(src)
-adata = adata[(msk_traj & msk_src)]
+adata = adata[msk_traj & msk_src]
 
 # balance data (random sampling)
 grp = adata.obs.groupby('source', observed = True)
 rand = grp.sample(n = grp.size().min(), random_state = 1)
 adata = adata[adata.obs_names.isin(rand.index)]
 
-# select data (all)
+# get expression, pseudotime, TFs
 X = pd.DataFrame(adata.X.toarray(),
                  index = adata.obs_names,
                  columns = adata.var_names)
