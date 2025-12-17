@@ -1,3 +1,9 @@
+# === OS & editor-specific files ===
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
 # === Python cache files ===
 __pycache__/
 *.py[cod]
@@ -6,42 +12,36 @@ __pycache__/
 # === Jupyter notebook checkpoints ===
 .ipynb_checkpoints/
 
-# === WandB/Lightning logs & checkpoints =======
-modeling/wandb/
-modeling/checkpoints/
-modeling/lightning_logs/
-
 # === Data files ===
-data/raw/
-data/ref/
-data/unzip/
-data/processed/
-data/trajectories/
-data/modeling/
 data/cancer/
-data/features/AnimalTFDB4
+data/DELAY/*/prediction
+data/DELAY/*/training
+data/DELAY/*/validation
 data/DELAY/*/NormalizedData.csv
 data/DELAY/*/PseudoTime.csv
 data/DELAY/*/TranscriptionFactors.csv
-data/DELAY/*/training
-data/DELAY/*/validation
-data/DELAY/*/prediction
+data/features/AnimalTFDB4
+data/modeling/
+data/processed/
+data/raw/
+data/ref/
+data/trajectories/
+data/unzip/
 
-# === OS & editor-specific files ===
-.DS_Store
-Thumbs.db
-.vscode/
-.idea/
+# === MesenCoder files =======
+modeling/checkpoints/
+modeling/lightning_logs/
+modeling/wandb/
 
 # === DELAY files ===
-DELAY/RunDELAY.py
-DELAY/requirements.txt
-DELAY/README.md
-DELAY/LICENSE.md
-DELAY/DELAY.png
-DELAY/.gitignore
-DELAY/Networks/
-DELAY/example-data/
-DELAY/DELAY/
 DELAY/Checkpoints/
+DELAY/DELAY/
+DELAY/example-data/
+DELAY/Networks/
 DELAY/RESULTS/
+DELAY/.gitignore
+DELAY/DELAY.png
+DELAY/LICENSE.md
+DELAY/README.md
+DELAY/requirements.txt
+DELAY/RunDELAY.py
