@@ -1,15 +1,15 @@
 #%%
 import os
-import numpy as np
 import pandas as pd
 import scanpy as sc
 import anndata as ad
 from scipy.sparse import csr_matrix
 from utils.load import load_CCCA_adata
-np.random.seed(1)
 
 pth = os.path.join('..', '..', 'data')
-pth_out = os.path.join(pth, 'cancer')
+pth_in = os.path.join(pth, 'unzip', 'CCCA')
+pth_feat = os.path.join(pth, 'features', 'biomart')
+pth_out = os.path.join(pth, 'modeling', 'inputs')
 
 # datasets summary (CCCA)
 summary_df = pd.read_csv(os.path.join(pth, 'CCCA_summary.csv'), sep = '\t')
@@ -18,8 +18,8 @@ cat = summary_df.Category.str.replace(r'[ /]', '-', regex = True)
 summary_df['Name'] = 'Data_' + title + '_' + cat
 
 # dataset features
-feat_fn = os.path.join(pth, 'features', 'biomart', 'union.csv')
-feat_union = pd.read_csv(feat_fn)
+feat_union = pd.read_csv(os.path.join(pth_feat, 'union.csv'))
+var_dict = feat_union.set_index('hsapiens').mmusculus.to_dict()
 
 # preprocessing
 def preprocess(adata: ad.AnnData) -> ad.AnnData:
@@ -31,7 +31,6 @@ def preprocess(adata: ad.AnnData) -> ad.AnnData:
 
     # keep dset features (mouse genes [homologs])
     adata = adata[:, adata.var_names.isin(feat_union.hsapiens)].copy()
-    var_dict = feat_union.set_index('hsapiens').mmusculus.to_dict()
     adata.var_names = adata.var_names.map(var_dict)
     return adata
 
@@ -39,7 +38,7 @@ def preprocess(adata: ad.AnnData) -> ad.AnnData:
 adata_dict = dict()
 for ix in summary_df.index:
     name_ix = summary_df.loc[ix].Name
-    dirname = os.path.join(pth, 'unzip', 'CCCA', name_ix)
+    dirname = os.path.join(pth_in, name_ix)
     if os.path.exists(dirname):
         for dirpth, subdir, _ in os.walk(dirname):
             if len(subdir) == 0:
