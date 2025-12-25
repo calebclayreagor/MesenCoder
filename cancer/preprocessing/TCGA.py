@@ -9,8 +9,7 @@ from scipy.sparse import csr_matrix
 pth = os.path.join('..', '..', 'data')
 pth_in = os.path.join(pth, 'unzip', 'TCGA')
 pth_feat = os.path.join(pth, 'features', 'biomart')
-pth_dev = os.path.join(pth, 'modeling', 'inputs')
-pth_out = os.path.join(pth, 'cancer')
+pth_out = os.path.join(pth, 'modeling', 'inputs')
 
 # load dataset [log2(TPM + 1e-3) -> log1p(TPM)]
 fn_data = os.path.join(pth_in, 'tcga_RSEM_gene_tpm.tsv')
@@ -32,12 +31,12 @@ adata.obs = adata.obs.join(df.astype(str), how = 'left')
 
 # keep features (mouse genes [homologs])
 features = pd.read_csv(os.path.join(pth_feat, 'union.csv'))
-adata = adata[:, adata.var_names.isin(features.hsapiens)].copy()
+adata = adata[:, adata.var_names.isin(features.hsapiens)]
 var_dict = features.set_index('hsapiens').mmusculus.to_dict()
 adata.var_names = adata.var_names.map(var_dict)
 
 # all dev features
-adata_dev = sc.read_h5ad(os.path.join(pth_dev, 'development.h5ad'))
+adata_dev = sc.read_h5ad(os.path.join(pth_out, 'development.h5ad'))
 X = csr_matrix((adata.shape[0], adata_dev.shape[1]), dtype = adata.X.dtype)
 X[:, adata_dev.var_names.get_indexer(adata.var_names)] = adata.X.copy()
 adata_out = ad.AnnData(X = X, var = adata_dev.var, obs = adata.obs)
