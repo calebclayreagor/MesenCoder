@@ -13,6 +13,7 @@ __pycache__/
 .ipynb_checkpoints/
 
 # === Data files ===
+data/cancer/
 data/DELAY/*/prediction
 data/DELAY/*/training
 data/DELAY/*/validation

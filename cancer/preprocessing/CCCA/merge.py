@@ -6,7 +6,7 @@ import anndata as ad
 from scipy.sparse import csr_matrix
 from utils.load import load_CCCA_adata
 
-pth = os.path.join('..', '..', 'data')
+pth = os.path.join('..', '..', '..', 'data')
 pth_in = os.path.join(pth, 'unzip', 'CCCA')
 pth_feat = os.path.join(pth, 'features', 'biomart')
 pth_out = os.path.join(pth, 'modeling', 'inputs')
