@@ -1,4 +1,4 @@
-Title	Category	Disease	Technology	Samples	Cells 
+Title	Category	Disease	Technology	Samples	Cells	Trajectory
 Chen et al. 2020	Head and Neck	Nasopharyngeal Carcinoma	10x	14	71896 
 Cillo et al. 2020	Head and Neck	Head and Neck Squamous Cell Carcinoma	10x	48	92569 
 Kürten et al. 2021	Head and Neck	Head and Neck Squamous Cell Carcinoma	10x	33	62700 
@@ -34,7 +34,7 @@ Couturier et al. 2020	Brain	Glioblastoma	10x	29	100335
 Darmanis et al. 2017	Brain	Glioblastoma	SmartSeq2	4	3589 
 Filbin et al. 2018	Brain	Pediatric Brain Cancer	SmartSeq2	7	2587 
 Gojo et al. 2020	Brain	Pediatric Brain Cancer	SmartSeq2	25	6739 
-Hovestadt et al. 2019	Brain	Pediatric Brain Cancer	SmartSeq2	36	8691 
+Hovestadt et al. 2019	Brain	Pediatric Brain Cancer	SmartSeq2	36	8691	True 
 Neftel et al. 2019	Brain	Glioblastoma	SmartSeq2	38	24131 
 Tirosh et al. 2016	Brain	IDH-Mutant Glioma	SmartSeq2	6	4347 
 Venteicher et al. 2017	Brain	IDH-Mutant Glioma	SmartSeq2	10	6341 
@@ -92,7 +92,7 @@ Cohen et al. 2021	Hematologic	Multiple Myeloma	MARS-seq	74	39157
 Gaiti et al. 2019	Hematologic	Chronic Lymphocytic Leukemia	SmartSeq2	8	720 
 Galen et al. 2019	Hematologic	Acute Myeloid Leukemia	SeqWell	37	33392 
 Gaydosik et al. 2019	Hematologic	Cutaneous T-Cell Lymphoma	10x	9	30497 
-Giustacchini et al. 2017	Hematologic	Chronic Myeloid Leukemia	HiSeq 2000	42	2287 
+Giustacchini et al. 2017	Hematologic	Chronic Myeloid Leukemia	HiSeq 2000	42	2287	True 
 Ledergor et al. 2018	Hematologic	Multiple Myeloma	MARS-seq	42	51840 
 Liu et al. 2021	Hematologic	Multiple Myeloma	10x	24	74986 
 Nam et al. 2019	Hematologic	Myeloproliferative Neoplasms	10x	10	31703 

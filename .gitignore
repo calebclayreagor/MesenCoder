@@ -14,17 +14,9 @@ __pycache__/
 
 # === Data files ===
 data/cancer/
-data/DELAY/*/prediction
-data/DELAY/*/training
-data/DELAY/*/validation
-data/DELAY/*/NormalizedData.csv
-data/DELAY/*/PseudoTime.csv
-data/DELAY/*/TranscriptionFactors.csv
-data/features/AnimalTFDB4
 data/modeling/
 data/processed/
 data/raw/
-data/ref/
 data/trajectories/
 data/unzip/
 
@@ -32,16 +24,3 @@ data/unzip/
 modeling/checkpoints/
 modeling/lightning_logs/
 modeling/wandb/
-
-# === DELAY files ===
-DELAY/Checkpoints/
-DELAY/DELAY/
-DELAY/example-data/
-DELAY/Networks/
-DELAY/RESULTS/
-DELAY/.gitignore
-DELAY/DELAY.png
-DELAY/LICENSE.md
-DELAY/README.md
-DELAY/requirements.txt
-DELAY/RunDELAY.py

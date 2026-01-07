@@ -6,6 +6,5 @@ HCAEmbryonicHindlimb,Embryonic Hindlimb,"Zhang et al., 2024",hsapiens,True,True,
 rRNAModifications,Cranial Neural Crest,"Poverennaya et al.",mmusculus,True,True,True,X_umap,E8.5-10.5,Neural crest cell dataset showing the bifurcation between cranial mesenchyme and neuroglia
 GSE201257,Schwann Cell Precursor,"Kastriti et al, 2022",mmusculus,True,True,False,X_umap,E9.5-Adult,Neural crest cell atlas describing diversification of glial cell lineages from neurulation to adulthood
 EMTHallmark,EMT Hallmark,"Liberzon et al., 2015",hsapiens,False,True,NA,NA,NA,"Genes defining epithelial-mesenchymal transition as in wound healing, fibrosis, and metastasis (v2025.1.Hs)"
-GSE230319,TF Cooperativity,"Kim et al., 2024",hsapiens,False,False,NA,NA,NA,Epigenomic analysis of TF cooperativity in embryonic face and limb-bud mesenchyme development using human cell lines
 CCCA,Curated Cancer Cell Atlas,"Tyler et al., 2025",hsapiens,False,False,NA,NA,NA,Cancer cell atlas containing 70+ curated single-cell datasets spanning >100 cancer subtypes
 TCGA,The Cancer Genome Atlas,"TCGA Network, 2013",hsapiens,False,False,NA,NA,NA,The Cancer Genome Atlas dataset of >40 cancer types with bulk sequencing for >10000 tumors
