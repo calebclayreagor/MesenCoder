@@ -1,8 +1,8 @@
 Title	Category	Disease	Technology	Samples	Cells	Trajectory
-Chen et al. 2020	Head and Neck	Nasopharyngeal Carcinoma	10x	14	71896 
-Cillo et al. 2020	Head and Neck	Head and Neck Squamous Cell Carcinoma	10x	48	92569 
-Kürten et al. 2021	Head and Neck	Head and Neck Squamous Cell Carcinoma	10x	33	62700 
-Puram et al. 2017	Head and Neck	Head and Neck Squamous Cell Carcinoma	SmartSeq2	18	5902 
+Chen et al. 2020	Head and Neck	Nasopharyngeal Carcinoma	10x	14	71896	False 
+Cillo et al. 2020	Head and Neck	Head and Neck Squamous Cell Carcinoma	10x	48	92569	False 
+Kürten et al. 2021	Head and Neck	Head and Neck Squamous Cell Carcinoma	10x	33	62700	False 
+Puram et al. 2017	Head and Neck	Head and Neck Squamous Cell Carcinoma	SmartSeq2	18	5902	True 
 Bischoff et al. 2021	Lung	Lung Adenocarcinoma	10x	20	120961 
 Chan et al. 2021	Lung	Lung Cancer	10x	37	86662 
 Guo et al. 2018	Lung	Non-Small Cell Lung Cancer	SmartSeq2	40	12346 
