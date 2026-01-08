@@ -29,39 +29,39 @@ He et al. 2021	Prostate	Prostate Cancer	SmartSeq2	15	2170	False
 Song et al. 2022	Prostate	Prostate Cancer	Seq-Well S3	15	21743	False 
 Jerby-Arnon et al. 2021	Sarcoma	Synovial Sarcoma	10x, SmartSeq2	15	16125	False 
 Zhou et al. 2020	Sarcoma	Osteosarcoma	10x	11	64557	False 
-Choudhury et al. 2022	Brain	Meningioma	10x	10	58843 
-Couturier et al. 2020	Brain	Glioblastoma	10x	29	100335 
-Darmanis et al. 2017	Brain	Glioblastoma	SmartSeq2	4	3589 
-Filbin et al. 2018	Brain	Pediatric Brain Cancer	SmartSeq2	7	2587 
-Gojo et al. 2020	Brain	Pediatric Brain Cancer	SmartSeq2	25	6739 
+Choudhury et al. 2022	Brain	Meningioma	10x	10	58843	False 
+Couturier et al. 2020	Brain	Glioblastoma	10x	29	100335	False 
+Darmanis et al. 2017	Brain	Glioblastoma	SmartSeq2	4	3589	False 
+Filbin et al. 2018	Brain	Pediatric Brain Cancer	SmartSeq2	7	2587	False 
+Gojo et al. 2020	Brain	Pediatric Brain Cancer	SmartSeq2	25	6739	False 
 Hovestadt et al. 2019	Brain	Pediatric Brain Cancer	SmartSeq2	36	8691	True 
-Neftel et al. 2019	Brain	Glioblastoma	SmartSeq2	38	24131 
-Tirosh et al. 2016	Brain	IDH-Mutant Glioma	SmartSeq2	6	4347 
-Venteicher et al. 2017	Brain	IDH-Mutant Glioma	SmartSeq2	10	6341 
-Wang et al. 2019	Brain	Glioblastoma	10x	10	16317 
-Yuan et al. 2018	Brain	High-Grade Glioma	Microwell array-based platform	8	23793 
-Azizi et al. 2018	Breast	Breast Cancer	10x, InDrop	58	75029 
-Bassez et al. 2021	Breast	Breast Cancer	10x	42	226635 
-Chung et al. 2017	Breast	Breast Cancer	SmartSeq2	13	515 
-Gao et al. 2021	Breast	Breast Cancer	10x	11	29992 
-Griffiths et al. 2021	Breast	Breast Cancer	10x, iCell8	95	111372 
-Gulati et al. 2020	Breast	Breast Cancer	SmartSeq2	15	1902 
-Jordan et al. 2016	Breast	Breast Cancer	NA	2	74 
-Karaayvas et al. 2018	Breast	Breast Cancer	SmartSeq2	6	1534 
-Kim et al. 2018	Breast	Triple-Negative Breast Cancer	Nanogrid	16	2472 
-Pal et al. 2021	Breast	Breast Cancer	10x	45	305224 
-Qian et al. 2020	Breast	Breast Cancer	10x	7	16537 
-Savas et al. 2018	Breast	Triple-Negative Breast Cancer	10x	2	6311 
-Wu et al. 2021	Breast	Breast Cancer	10x	26	100064 
-Hwang et al. 2022	Pancreas	Pancreatic Ductal Adenocarcinoma	10x	43	224988 
-Lin et al. 2020	Pancreas	Pancreatic Ductal Adenocarcinoma	10x	16	14926 
-Moncada et al. 2020	Pancreas	Pancreatic Ductal Adenocarcinoma	inDrop	2	3659 
-Peng et al. 2019	Pancreas	Pancreatic Ductal Adenocarcinoma	10x	16	27953 
-Raghavan et al. 2021	Pancreas	Pancreatic Ductal Adenocarcinoma	Seq-Well	24	24412 
-Steele et al. 2020	Pancreas	Pancreatic Ductal Adenocarcinoma	10x	16	48570  
-Dong et al. 2020	Neuroendocrine	Neuroblastoma	10x	13	55190 
-Jansky et al. 2021	Neuroendocrine	Neuroblastoma	10x	14	64769 
-Kildisiute et al. 2021	Neuroendocrine	Neuroblastoma	10x, CEL-seq2	21	19723 
+Neftel et al. 2019	Brain	Glioblastoma	SmartSeq2	38	24131	True 
+Tirosh et al. 2016	Brain	IDH-Mutant Glioma	SmartSeq2	6	4347	False 
+Venteicher et al. 2017	Brain	IDH-Mutant Glioma	SmartSeq2	10	6341	False 
+Wang et al. 2019	Brain	Glioblastoma	10x	10	16317	False 
+Yuan et al. 2018	Brain	High-Grade Glioma	Microwell array-based platform	8	23793	False 
+Azizi et al. 2018	Breast	Breast Cancer	10x, InDrop	58	75029	False 
+Bassez et al. 2021	Breast	Breast Cancer	10x	42	226635	False 
+Chung et al. 2017	Breast	Breast Cancer	SmartSeq2	13	515	False 
+Gao et al. 2021	Breast	Breast Cancer	10x	11	29992	False 
+Griffiths et al. 2021	Breast	Breast Cancer	10x, iCell8	95	111372	False 
+Gulati et al. 2020	Breast	Breast Cancer	SmartSeq2	15	1902	False 
+Jordan et al. 2016	Breast	Breast Cancer	NA	2	74	False 
+Karaayvas et al. 2018	Breast	Breast Cancer	SmartSeq2	6	1534	False 
+Kim et al. 2018	Breast	Triple-Negative Breast Cancer	Nanogrid	16	2472	False 
+Pal et al. 2021	Breast	Breast Cancer	10x	45	305224	False 
+Qian et al. 2020	Breast	Breast Cancer	10x	7	16537	False 
+Savas et al. 2018	Breast	Triple-Negative Breast Cancer	10x	2	6311	False 
+Wu et al. 2021	Breast	Breast Cancer	10x	26	100064	False 
+Hwang et al. 2022	Pancreas	Pancreatic Ductal Adenocarcinoma	10x	43	224988	False 
+Lin et al. 2020	Pancreas	Pancreatic Ductal Adenocarcinoma	10x	16	14926	True 
+Moncada et al. 2020	Pancreas	Pancreatic Ductal Adenocarcinoma	inDrop	2	3659	False 
+Peng et al. 2019	Pancreas	Pancreatic Ductal Adenocarcinoma	10x	16	27953	False 
+Raghavan et al. 2021	Pancreas	Pancreatic Ductal Adenocarcinoma	Seq-Well	24	24412	False 
+Steele et al. 2020	Pancreas	Pancreatic Ductal Adenocarcinoma	10x	16	48570	False  
+Dong et al. 2020	Neuroendocrine	Neuroblastoma	10x	13	55190	False 
+Jansky et al. 2021	Neuroendocrine	Neuroblastoma	10x	14	64769	False 
+Kildisiute et al. 2021	Neuroendocrine	Neuroblastoma	10x, CEL-seq2	21	19723	True 
 Chen et al. 2021	Colorectal	Colon Adenoma	Modified InDrop	121	122811 
 Lee et al. 2020	Colorectal	Colorectal Cancer	10x	15	21657 
 Li et al. 2017	Colorectal	Colorectal Cancer	SmartSeq2	18	590 
