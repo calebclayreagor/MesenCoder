@@ -3,32 +3,32 @@ Chen et al. 2020	Head and Neck	Nasopharyngeal Carcinoma	10x	14	71896	False
 Cillo et al. 2020	Head and Neck	Head and Neck Squamous Cell Carcinoma	10x	48	92569	False 
 Kürten et al. 2021	Head and Neck	Head and Neck Squamous Cell Carcinoma	10x	33	62700	False 
 Puram et al. 2017	Head and Neck	Head and Neck Squamous Cell Carcinoma	SmartSeq2	18	5902	True 
-Bischoff et al. 2021	Lung	Lung Adenocarcinoma	10x	20	120961 
-Chan et al. 2021	Lung	Lung Cancer	10x	37	86662 
-Guo et al. 2018	Lung	Non-Small Cell Lung Cancer	SmartSeq2	40	12346 
-Ireland et al. 2020	Lung	Small Cell Lung Cancer	10x	12	31258 
-Kim et al. 2020	Lung	Lung Adenocarcinoma	10x	14	32493 
-Laughney et al. 2020	Lung	Lung Cancer	10x	17	40505 
-Maynard et al. 2020	Lung	Lung Cancer	SmartSeq2	50	19777 
-Qian et al. 2020	Lung	Lung Cancer	10x	8	27262 
-Song et al. 2019	Lung	Non-Small Cell Lung Cancer	10x	6	8772 
-Xing et al. 2021	Lung	Lung Cancer	10x	31	118293 
-Zilionis et al. 2019	Lung	Non-Small Cell Lung Cancer	inDrop	7	31179 
-Sharma et al. 2020	Liver/Biliary	Hepatocellular Carcinoma	10x	58	73589 
-Sun et al. 2021	Liver/Biliary	Hepatocellular Carcinoma	10x	18	16498 
-Zhang et al. 2019	Liver/Biliary	Hepatocellular Carcinoma	10x, SmartSeq2	42	73261 
-Zheng et al. 2017	Liver/Biliary	Hepatocellular Carcinoma	10x	17	5063 
-Bi et al. 2021	Kidney	Renal Cell Carcinoma	10x	8	34326 
-Krishna et al. 2021	Kidney	Renal Cell Carcinoma	10x	29	167283 
-Obradovic et al. 2021	Kidney	Renal Cell Carcinoma	10x	8	19781 
-Young et al. 2018	Kidney	Kidney Cancer	10x	66	125139 
-Zhang et al. 2021	Kidney	Renal Cell Carcinoma	10x	14	29474 
-Chen et al. 2021	Prostate	Prostate Cancer	10x	13	36424 
-Dong et al. 2020	Prostate	Prostate Cancer	10x	6	21292 
-He et al. 2021	Prostate	Prostate Cancer	SmartSeq2	15	2170 
-Song et al. 2022	Prostate	Prostate Cancer	Seq-Well S3	15	21743 
-Jerby-Arnon et al. 2021	Sarcoma	Synovial Sarcoma	10x, SmartSeq2	15	16125 
-Zhou et al. 2020	Sarcoma	Osteosarcoma	10x	11	64557 
+Bischoff et al. 2021	Lung	Lung Adenocarcinoma	10x	20	120961	False 
+Chan et al. 2021	Lung	Lung Cancer	10x	37	86662	False 
+Guo et al. 2018	Lung	Non-Small Cell Lung Cancer	SmartSeq2	40	12346	False 
+Ireland et al. 2020	Lung	Small Cell Lung Cancer	10x	12	31258	False 
+Kim et al. 2020	Lung	Lung Adenocarcinoma	10x	14	32493	False 
+Laughney et al. 2020	Lung	Lung Cancer	10x	17	40505	False 
+Maynard et al. 2020	Lung	Lung Cancer	SmartSeq2	50	19777	False 
+Qian et al. 2020	Lung	Lung Cancer	10x	8	27262	False 
+Song et al. 2019	Lung	Non-Small Cell Lung Cancer	10x	6	8772	False 
+Xing et al. 2021	Lung	Lung Cancer	10x	31	118293	False 
+Zilionis et al. 2019	Lung	Non-Small Cell Lung Cancer	inDrop	7	31179	False 
+Sharma et al. 2020	Liver/Biliary	Hepatocellular Carcinoma	10x	58	73589	False 
+Sun et al. 2021	Liver/Biliary	Hepatocellular Carcinoma	10x	18	16498	False 
+Zhang et al. 2019	Liver/Biliary	Hepatocellular Carcinoma	10x, SmartSeq2	42	73261	False 
+Zheng et al. 2017	Liver/Biliary	Hepatocellular Carcinoma	10x	17	5063	False 
+Bi et al. 2021	Kidney	Renal Cell Carcinoma	10x	8	34326	False 
+Krishna et al. 2021	Kidney	Renal Cell Carcinoma	10x	29	167283	False 
+Obradovic et al. 2021	Kidney	Renal Cell Carcinoma	10x	8	19781	False 
+Young et al. 2018	Kidney	Kidney Cancer	10x	66	125139	False 
+Zhang et al. 2021	Kidney	Renal Cell Carcinoma	10x	14	29474	False 
+Chen et al. 2021	Prostate	Prostate Cancer	10x	13	36424	False 
+Dong et al. 2020	Prostate	Prostate Cancer	10x	6	21292	False 
+He et al. 2021	Prostate	Prostate Cancer	SmartSeq2	15	2170	False 
+Song et al. 2022	Prostate	Prostate Cancer	Seq-Well S3	15	21743	False 
+Jerby-Arnon et al. 2021	Sarcoma	Synovial Sarcoma	10x, SmartSeq2	15	16125	False 
+Zhou et al. 2020	Sarcoma	Osteosarcoma	10x	11	64557	False 
 Choudhury et al. 2022	Brain	Meningioma	10x	10	58843 
 Couturier et al. 2020	Brain	Glioblastoma	10x	29	100335 
 Darmanis et al. 2017	Brain	Glioblastoma	SmartSeq2	4	3589 
