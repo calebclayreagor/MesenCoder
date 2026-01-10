@@ -62,31 +62,31 @@ Steele et al. 2020	Pancreas	Pancreatic Ductal Adenocarcinoma	10x	16	48570	False
 Dong et al. 2020	Neuroendocrine	Neuroblastoma	10x	13	55190	False 
 Jansky et al. 2021	Neuroendocrine	Neuroblastoma	10x	14	64769	False 
 Kildisiute et al. 2021	Neuroendocrine	Neuroblastoma	10x, CEL-seq2	21	19723	True 
-Chen et al. 2021	Colorectal	Colon Adenoma	Modified InDrop	121	122811 
-Lee et al. 2020	Colorectal	Colorectal Cancer	10x	15	21657 
-Li et al. 2017	Colorectal	Colorectal Cancer	SmartSeq2	18	590 
-Pelka et al. 2021	Colorectal	Colorectal Cancer	10x	100	370115 
-Zhang et al. 2018	Colorectal	Colorectal Cancer	SmartSeq2	33	11138 
-Geistlinger et al. 2020	Ovarian	High-Grade Ovarian Cancer	10x	5	41031 
-Izar et al. 2020	Ovarian	High-Grade Ovarian Cancer	10x, SmartSeq2	14	10788 
-Nath et al. 2021	Ovarian	High-Grade Ovarian Cancer	10x, iCell8	18	41729 
-Olalekan et al. 2021	Ovarian	Ovarian Cancer	Drop-seq	6	9885 
-Olbrecht et al. 2021	Ovarian	High-Grade Ovarian Cancer	10x	11	15528 
-Qian et al. 2020	Ovarian	Ovarian Cancer	10x	4	16951 
-Shih et al. 2018	Ovarian	Ovarian Cancer	SmartSeq2	18	3066 
-Tang-Huau et al. 2018	Ovarian	Ovarian Cancer	10x	4	8404 
-Zhang et al. 2019	Ovarian	High-Grade Ovarian Cancer	10x	2	4848 
-Zhang et al. 2022	Ovarian	High-Grade Ovarian Cancer	10x	22	51786 
-Biermann et al. 2022	Skin	Metastatic Melanoma	10x	32	136973 
-Ferrari de Andrade et al. 2019	Skin	Metastatic Melanoma	10x	12	40823 
-Jerby-Arnon et al. 2018	Skin	Melanoma	SmartSeq2	32	7186 
-Ji et al. 2020	Skin	Skin Cancer	10x	10	48164 
-Li et al. 2019	Skin	Melanoma	MARS-seq	27	78336 
-Mahuron et al. 2020	Skin	Metastatic Melanoma	10x	6	27935 
-Paulson et al. 2020	Skin	Merkel Cell Carcinoma	10x	8	31376 
-Sade-Feldman et al. 2018	Skin	Melanoma	SmartSeq2	48	16291 
-Tirosh et al. 2016	Skin	Melanoma	SmartSeq2	19	4645 
-Yost et al. 2019	Skin	Skin Cancer	10x	30	79046 
+Chen et al. 2021	Colorectal	Colon Adenoma	Modified InDrop	121	122811	False 
+Lee et al. 2020	Colorectal	Colorectal Cancer	10x	15	21657	False 
+Li et al. 2017	Colorectal	Colorectal Cancer	SmartSeq2	18	590	False 
+Pelka et al. 2021	Colorectal	Colorectal Cancer	10x	100	370115	False 
+Zhang et al. 2018	Colorectal	Colorectal Cancer	SmartSeq2	33	11138	False 
+Geistlinger et al. 2020	Ovarian	High-Grade Ovarian Cancer	10x	5	41031	False 
+Izar et al. 2020	Ovarian	High-Grade Ovarian Cancer	10x, SmartSeq2	14	10788	False 
+Nath et al. 2021	Ovarian	High-Grade Ovarian Cancer	10x, iCell8	18	41729	False 
+Olalekan et al. 2021	Ovarian	Ovarian Cancer	Drop-seq	6	9885	False 
+Olbrecht et al. 2021	Ovarian	High-Grade Ovarian Cancer	10x	11	15528	False 
+Qian et al. 2020	Ovarian	Ovarian Cancer	10x	4	16951	False 
+Shih et al. 2018	Ovarian	Ovarian Cancer	SmartSeq2	18	3066	False 
+Tang-Huau et al. 2018	Ovarian	Ovarian Cancer	10x	4	8404	False 
+Zhang et al. 2019	Ovarian	High-Grade Ovarian Cancer	10x	2	4848	False 
+Zhang et al. 2022	Ovarian	High-Grade Ovarian Cancer	10x	22	51786	False 
+Biermann et al. 2022	Skin	Metastatic Melanoma	10x	32	136973	False 
+Ferrari de Andrade et al. 2019	Skin	Metastatic Melanoma	10x	12	40823	False 
+Jerby-Arnon et al. 2018	Skin	Melanoma	SmartSeq2	32	7186	True 
+Ji et al. 2020	Skin	Skin Cancer	10x	10	48164	False 
+Li et al. 2019	Skin	Melanoma	MARS-seq	27	78336	False 
+Mahuron et al. 2020	Skin	Metastatic Melanoma	10x	6	27935	False 
+Paulson et al. 2020	Skin	Merkel Cell Carcinoma	10x	8	31376	False 
+Sade-Feldman et al. 2018	Skin	Melanoma	SmartSeq2	48	16291	False 
+Tirosh et al. 2016	Skin	Melanoma	SmartSeq2	19	4645	True 
+Yost et al. 2019	Skin	Skin Cancer	10x	30	79046	False 
 Caron et al. 2020	Hematologic	Acute Lymphoblastic Leukemia	10x	10	37320 
 Cohen et al. 2021	Hematologic	Multiple Myeloma	MARS-seq	74	39157 
 Gaiti et al. 2019	Hematologic	Chronic Lymphocytic Leukemia	SmartSeq2	8	720 
