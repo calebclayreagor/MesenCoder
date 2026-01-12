@@ -13,10 +13,10 @@ __pycache__/
 .ipynb_checkpoints/
 
 # === Data files ===
-data/cancer/
 data/modeling/
 data/processed/
 data/raw/
+data/refs/
 data/trajectories/
 data/unzip/
 
