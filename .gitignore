@@ -17,6 +17,7 @@ data/modeling/
 data/processed/
 data/raw/
 data/refs/
+data/TCGA/
 data/trajectories/
 data/unzip/
 
